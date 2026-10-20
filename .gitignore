@@ -1,0 +1,27 @@
+# Dependencias y compilados
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+
+# yt-dlp y ffmpeg no van en el repo: se descargan con scripts/binarios.ps1
+# (comprobando su SHA-256) y build.rs los mete comprimidos en el .exe.
+src-tauri/bin/
+
+# Secretos y entorno local
+.env
+.env.*
+*.pem
+*.pfx
+
+# Sistema y editores
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Material interno: documentos de diseño (con datos personales) y config de herramientas
+design_handoff_tunadl/
+.claude/

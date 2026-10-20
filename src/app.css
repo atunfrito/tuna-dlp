@@ -1,0 +1,64 @@
+:root {
+  --bg: #e9dfcd; --side: #e2d7c3; --fg: #241e18;
+  --dim: rgba(36, 30, 24, 0.64); --faint: rgba(36, 30, 24, 0.42);
+  --line: rgba(36, 30, 24, 0.13); --hover: rgba(36, 30, 24, 0.06);
+  --dots: rgba(37, 31, 25, 0.07); --glow: rgba(255, 176, 84, 0.2);
+  --shadow: 0 14px 30px rgba(92, 70, 44, 0.15); --tape: #f2d5cf;
+
+  /* El papel se queda crema en los dos temas. */
+  --paper: #fffdf8; --paper-fg: #251f19; --paper-field: #f5f0e7;
+  --paper-line: rgba(37, 31, 25, 0.14); --paper-dim: rgba(37, 31, 25, 0.56);
+  --paper-rule: rgba(37, 31, 25, 0.07); --note: #f6e6b8;
+  --term: #211a16; --term-fg: #f0ebe2;
+
+  --accent: #c8102e; --accent-fg: #f7efe4; --accent-hot: #e5203c;
+  --ok: #3f9b62;
+  --r: 6px;
+
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: Archivo, "Helvetica Neue", Helvetica, sans-serif;
+  --mono: "JetBrains Mono", monospace;
+  --hand: Caveat, cursive;
+}
+:root[data-theme="dark"] {
+  --bg: #14100d; --side: #1a1511; --fg: #f0ebe2;
+  --dim: rgba(240, 235, 226, 0.62); --faint: rgba(240, 235, 226, 0.38);
+  --line: rgba(240, 235, 226, 0.11); --hover: rgba(240, 235, 226, 0.06);
+  --dots: rgba(240, 235, 226, 0.05); --glow: rgba(255, 190, 112, 0.11);
+  --shadow: 0 22px 46px rgba(0, 0, 0, 0.5); --tape: #eccfc9;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+input, textarea, [data-seleccionable] { user-select: text; }
+button, input, textarea { font: inherit; }
+a { color: var(--accent); }
+a:hover { color: var(--accent-hot); }
+input::placeholder, textarea::placeholder { color: rgba(37, 31, 25, 0.4); }
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--line); border-radius: 5px;
+  border: 2px solid transparent; background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--faint); }
+
+svg.lucide { display: block; flex: 0 0 auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
