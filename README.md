@@ -22,17 +22,21 @@ quieres y le des a *descargar*.
 Está pensado para quien no quiere abrir una terminal ni aprenderse las opciones
 de yt-dlp. Si te manejas con la línea de comandos, yt-dlp a secas te servirá mejor.
 
+<!-- Cuando esté grabado docs/demo.gif, quitar este comentario:
 <p align="center">
   <img src="docs/demo.gif" width="760" alt="tuna-dlp descargando un vídeo">
 </p>
+-->
 
 ## Capturas
 
-| Descargar | Cola |
+![Vista de descargar](docs/descargar.png)
+
+| Cola | Ajustes |
 | --- | --- |
-| ![Vista de descargar](docs/descargar.png) | ![Cola](docs/cola.png) |
-| **Ajustes** | **Menú de la bandeja** |
-| ![Ajustes](docs/ajustes.png) | ![Menú de la bandeja](docs/bandeja.png) |
+| ![Cola](docs/cola.png) | ![Ajustes](docs/ajustes.png) |
+| **Menú de la bandeja** | **Aviso al terminar** |
+| ![Menú de la bandeja](docs/bandeja.png) | ![Aviso al terminar una descarga](docs/aviso.png) |
 
 ## Qué hace
 
