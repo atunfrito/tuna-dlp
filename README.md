@@ -81,8 +81,9 @@ yt-dlp y ffmpeg **van dentro del .exe**, así que no hay que instalar nada más.
 1. Entra en [Releases](https://github.com/atunfrito/tuna-dlp/releases/latest).
 2. Descarga `tuna-dlp_x.y.z_x64-setup.exe` y ábrelo. Se instala solo para tu usuario, sin pedir permisos de administrador.
 
-También hay un `tuna-dlp.exe` portable que funciona sin instalar (los ajustes se
-guardan igualmente en tu perfil de usuario).
+También hay una versión portable, `tuna-dlp_x.y.z_x64-portable.zip`: descomprímela
+y abre `tuna-dlp.exe`, sin instalar nada (los ajustes se guardan igualmente en tu
+perfil de usuario).
 
 > **Windows SmartScreen:** la app no está firmada (los certificados cuestan dinero),
 > así que la primera vez Windows puede decir *"Windows protegió su PC"*. Pulsa
