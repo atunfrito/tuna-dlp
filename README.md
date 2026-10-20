@@ -22,11 +22,9 @@ quieres y le des a *descargar*.
 Está pensado para quien no quiere abrir una terminal ni aprenderse las opciones
 de yt-dlp. Si te manejas con la línea de comandos, yt-dlp a secas te servirá mejor.
 
-<!-- Cuando esté grabado docs/demo.gif, quitar este comentario:
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="tuna-dlp descargando un vídeo">
+  <img src="docs/demo.gif" width="760" alt="tuna-dlp: pegar un enlace, descargar y ver la cola">
 </p>
--->
 
 ## Capturas
 
