@@ -146,7 +146,10 @@ Hecho con [Tauri 2](https://tauri.app), [Svelte 5](https://svelte.dev) y Rust.
 
 ## Créditos y licencias
 
-tuna-dlp se publica con [licencia MIT](LICENSE).
+tuna-dlp se publica con [licencia MIT](LICENSE). La lista completa de software de
+terceros, con versiones, licencias y dónde está su código fuente, está en
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), y los textos de las licencias en
+[`licenses/`](licenses).
 
 Incluye y ejecuta estos programas, que mantienen sus propias licencias:
 
