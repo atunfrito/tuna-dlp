@@ -9,8 +9,11 @@
   import FolderOpen from "@lucide/svelte/icons/folder-open";
   import Power from "@lucide/svelte/icons/power";
   import Icono from "./lib/Icono.svelte";
+  import { traducir, idiomaDe } from "./lib/textos.js";
 
-  let e = $state({ estado: "nada descargando", pausado: false, progreso: null, activas: 0 });
+  let e = $state({ estado: "", pausado: false, progreso: null, activas: 0, idioma: "" });
+  // El idioma lo manda la ventana principal; hasta entonces, el de Windows.
+  const tr = (clave) => traducir(idiomaDe(e.idioma), clave);
   let abierto = $state(0);
 
   const hacer = (accion) => invoke("accion_bandeja", { accion });
@@ -45,7 +48,7 @@
         <Icono tam={22} />
         <div class="textos">
           <span class="nombre">tuna-dlp</span>
-          <span class="estado"><span class="punto {punto}"></span>{e.estado}</span>
+          <span class="estado"><span class="punto {punto}"></span>{e.estado || tr("bandeja.nada")}</span>
         </div>
       </div>
       {#if e.activas && e.progreso != null}
@@ -54,20 +57,20 @@
 
       <div class="separador"></div>
       <button type="button" role="menuitem" class="item" onclick={() => hacer("pegar")}>
-        <ClipboardPaste size={16} strokeWidth={1.75} />pegar y descargar
+        <ClipboardPaste size={16} strokeWidth={1.75} />{tr("menu.pegar")}
       </button>
       <button type="button" role="menuitem" class="item" onclick={() => hacer("abrir")}>
-        <AppWindow size={16} strokeWidth={1.75} />abrir tuna-dlp
+        <AppWindow size={16} strokeWidth={1.75} />{tr("menu.abrir")}
       </button>
       <button type="button" role="menuitem" class="item" onclick={() => hacer("pausa")}>
-        {#if e.pausado}<Play size={16} strokeWidth={1.75} />reanudar todo{:else}<Pause size={16} strokeWidth={1.75} />pausar todo{/if}
+        {#if e.pausado}<Play size={16} strokeWidth={1.75} />{tr("menu.reanudar")}{:else}<Pause size={16} strokeWidth={1.75} />{tr("menu.pausar")}{/if}
       </button>
       <button type="button" role="menuitem" class="item" onclick={() => hacer("carpeta")}>
-        <FolderOpen size={16} strokeWidth={1.75} />abrir carpeta de descargas
+        <FolderOpen size={16} strokeWidth={1.75} />{tr("menu.carpeta")}
       </button>
       <div class="separador"></div>
       <button type="button" role="menuitem" class="item salir" onclick={() => hacer("salir")}>
-        <Power size={16} strokeWidth={1.75} />salir del todo
+        <Power size={16} strokeWidth={1.75} />{tr("menu.salir")}
       </button>
     </div>
   {/key}

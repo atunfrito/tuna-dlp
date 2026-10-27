@@ -3,9 +3,10 @@
 import { invoke } from "@tauri-apps/api/core";
 import { ajustes, temaEfectivo, enTauri } from "./estado.svelte.js";
 import { tam } from "./formato.js";
+import { t, idioma } from "./i18n.svelte.js";
 
 function avisar(datos) {
-  if (enTauri) invoke("aviso", { datos: { ...datos, tema: temaEfectivo() } }).catch(() => {});
+  if (enTauri) invoke("aviso", { datos: { ...datos, tema: temaEfectivo(), idioma: idioma() } }).catch(() => {});
 }
 
 // Si estás mirando la app no hace falta avisar de nada.
@@ -15,7 +16,7 @@ export function descargaHecha(d) {
   if (!ajustes.avisar || mirando()) return;
   avisar({
     tipo: "descarga",
-    etiqueta: "HECHO",
+    etiqueta: t("aviso.hecho"),
     titulo: d.titulo,
     texto: [d.que, tam(d.tamano)].filter(Boolean).join(" · "),
     miniatura: d.miniatura,
@@ -28,9 +29,9 @@ export function videosNuevos(canal, n) {
   if (!ajustes.avisarNuevos) return;
   avisar({
     tipo: "nuevos",
-    etiqueta: "SUSCRIPCIONES",
+    etiqueta: t("aviso.subs"),
     titulo: canal,
-    texto: n + (n === 1 ? " vídeo nuevo, ya en la cola" : " vídeos nuevos, ya en la cola"),
+    texto: n === 1 ? t("aviso.nuevo") : t("aviso.nuevos", { n }),
   });
 }
 
@@ -38,7 +39,7 @@ export function enLaBandeja() {
   avisar({
     tipo: "bandeja",
     etiqueta: "TUNA-DLP",
-    titulo: "sigo aquí, en la bandeja",
-    texto: "las descargas siguen. para salir del todo, clic derecho en mi icono.",
+    titulo: t("aviso.bandeja"),
+    texto: t("aviso.bandeja_texto"),
   });
 }

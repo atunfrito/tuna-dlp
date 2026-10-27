@@ -11,15 +11,16 @@
   import Icono from "./Icono.svelte";
   import { version } from "../../package.json";
   import { ajustes, app, temaEfectivo } from "./estado.svelte.js";
+  import { t } from "./i18n.svelte.js";
 
   let { activas = 0, hayActualizacion = false } = $props();
 
   const vistas = $derived([
-    ["dl", "descargar", Download],
-    ["queue", "cola", List],
-    ...(ajustes.historial ? [["hist", "historial", Clock]] : []),
-    ...(ajustes.suscripciones ? [["feeds", "suscripciones", Rss]] : []),
-    ["settings", "ajustes", SlidersVertical],
+    ["dl", t("nav.dl"), Download],
+    ["queue", t("nav.queue"), List],
+    ...(ajustes.historial ? [["hist", t("nav.hist"), Clock]] : []),
+    ...(ajustes.suscripciones ? [["feeds", t("nav.feeds"), Rss]] : []),
+    ["settings", t("nav.settings"), SlidersVertical],
   ]);
   const oscuro = $derived(temaEfectivo() === "dark");
   const plegado = $derived(ajustes.menuPlegado);
@@ -29,7 +30,7 @@
 <nav class="lateral" class:plegado>
   <button
     type="button" class="logo"
-    title={plegado ? "desplegar menú" : "plegar menú"} aria-expanded={!plegado}
+    title={plegado ? t("nav.desplegar") : t("nav.plegar")} aria-expanded={!plegado}
     onclick={() => (ajustes.menuPlegado = !plegado)}
   >
     {#if plegado}
@@ -68,7 +69,7 @@
     {/if}
     <div class="fila">
       {#if !plegado}<span class="version">tuna-dlp {version}</span>{/if}
-      <button type="button" class="tema" aria-label="cambiar tema" onclick={() => (ajustes.tema = oscuro ? "light" : "dark")}>
+      <button type="button" class="tema" aria-label={t("nav.tema")} onclick={() => (ajustes.tema = oscuro ? "light" : "dark")}>
         <span class="icono" class:visible={oscuro}><Sun size={15} strokeWidth={1.75} /></span>
         <span class="icono" class:visible={!oscuro}><Moon size={15} strokeWidth={1.75} /></span>
       </button>

@@ -1,58 +1,59 @@
-# Software de terceros
+# Third-party software
 
-El código de tuna-dlp se publica con [licencia MIT](LICENSE). El instalador y el
-`.exe` incluyen además los programas y librerías de abajo, que **mantienen sus
-propias licencias**. Los textos completos están en la carpeta [`licenses/`](licenses).
+*[Versión en español](THIRD-PARTY-NOTICES.es.md)*
 
-## Programas incluidos dentro del .exe
+tuna-dlp's own code is released under the [MIT License](LICENSE). The installer and
+the `.exe` also include the programs and libraries below, which **keep their own
+licenses**. The full license texts are in the [`licenses/`](licenses) folder.
 
-tuna-dlp no modifica estos programas: van comprimidos dentro del `.exe`, se extraen
-tal cual a `%LOCALAPPDATA%\es.atunfrito.tunadlp\bin` y se ejecutan como procesos
-aparte.
+## Programs bundled inside the .exe
+
+tuna-dlp doesn't modify these programs: they're compressed inside the `.exe`,
+extracted as they are to `%LOCALAPPDATA%\es.atunfrito.tunadlp\bin`, and run as
+separate processes.
 
 ### yt-dlp
 
-- **Qué es:** el programa que hace las descargas.
-- **Versión en tuna-dlp 1.0.0:** 2026.08.19 (el `yt-dlp.exe` oficial; se puede actualizar desde la app).
-- **Licencia:** [Unlicense](licenses/yt-dlp-LICENSE.txt) (dominio público).
-- **Código fuente:** https://github.com/yt-dlp/yt-dlp
+- **What it does:** the actual downloading.
+- **Version bundled:** 2026.08.19 (the official `yt-dlp.exe`; it can be updated from inside the app).
+- **License:** [Unlicense](licenses/yt-dlp-LICENSE.txt) (public domain).
+- **Source code:** https://github.com/yt-dlp/yt-dlp
 
-### FFmpeg (`ffmpeg.exe` y `ffprobe.exe`)
+### FFmpeg (`ffmpeg.exe` and `ffprobe.exe`)
 
-- **Qué es:** une audio y vídeo, convierte formatos, incrusta miniaturas y recorta.
-- **Versión en tuna-dlp 1.0.0:** FFmpeg 9.0.2, build *release essentials* de
-  [gyan.dev](https://www.gyan.dev/ffmpeg/builds/), sin modificar.
-- **Licencia:** **GNU GPL v3**. Ese build está compilado con
-  `--enable-gpl --enable-version3` e incluye librerías GPL (x264, x265, entre otras),
-  así que el conjunto se distribuye bajo la [GPL v3](licenses/GPL-3.0.txt).
-  Detalles de la licencia de FFmpeg: [licenses/FFmpeg-LICENSE.md](licenses/FFmpeg-LICENSE.md).
-- **Código fuente correspondiente:**
-  - FFmpeg 9.0.2: https://ffmpeg.org/releases/ y https://github.com/FFmpeg/FFmpeg/tree/n9.0.2
-  - Configuración exacta y librerías de cada build de gyan.dev: https://www.gyan.dev/ffmpeg/builds/
-    (`ffmpeg -version` también muestra la configuración completa).
-  - Si necesitas el código fuente de ese build y no puedes conseguirlo con estos
-    enlaces, [abre un issue](https://github.com/atunfrito/tuna-dlp/issues) y te lo
-    facilito, durante al menos tres años desde la última versión publicada de tuna-dlp
-    que lo incluya.
+- **What it does:** merges audio and video, converts formats, embeds thumbnails and trims.
+- **Version bundled:** FFmpeg 9.0.2, the *release essentials* build by
+  [gyan.dev](https://www.gyan.dev/ffmpeg/builds/), unmodified.
+- **License:** **GNU GPL v3**. That build is compiled with
+  `--enable-gpl --enable-version3` and includes GPL libraries (x264, x265 and others),
+  so the whole is distributed under the [GPL v3](licenses/GPL-3.0.txt).
+  FFmpeg's licensing details: [licenses/FFmpeg-LICENSE.md](licenses/FFmpeg-LICENSE.md).
+- **Corresponding source code:**
+  - FFmpeg 9.0.2: https://ffmpeg.org/releases/ and https://github.com/FFmpeg/FFmpeg/tree/n9.0.2
+  - Exact configuration and libraries of each gyan.dev build: https://www.gyan.dev/ffmpeg/builds/
+    (`ffmpeg -version` also prints the full configuration).
+  - If you need the source code of that build and can't get it from these links,
+    [open an issue](https://github.com/atunfrito/tuna-dlp/issues) and I'll provide it,
+    for at least three years after the last tuna-dlp release that includes it.
 
-FFmpeg es una marca de Fabrice Bellard, creador del proyecto FFmpeg.
+FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project.
 
-## Librerías usadas para construir la app
+## Libraries used to build the app
 
-| Proyecto | Licencia | Copyright |
+| Project | License | Copyright |
 | --- | --- | --- |
-| [Tauri](https://github.com/tauri-apps/tauri) | MIT o Apache-2.0 | © Tauri Programme within The Commons Conservancy |
+| [Tauri](https://github.com/tauri-apps/tauri) | MIT or Apache-2.0 | © Tauri Programme within The Commons Conservancy |
 | [Svelte](https://github.com/sveltejs/svelte) | MIT | © Svelte contributors |
-| [Lucide](https://github.com/lucide-icons/lucide) (iconos) | ISC | © Lucide Contributors; partes de Feather © Cole Bemis (MIT) |
-| [zstd](https://github.com/facebook/zstd) (vía el crate `zstd`) | BSD-3-Clause o GPL-2.0 | © Meta Platforms, Inc. |
+| [Lucide](https://github.com/lucide-icons/lucide) (icons) | ISC | © Lucide Contributors; parts of Feather © Cole Bemis (MIT) |
+| [zstd](https://github.com/facebook/zstd) (through the `zstd` crate) | BSD-3-Clause or GPL-2.0 | © Meta Platforms, Inc. |
 
-Las demás dependencias de Rust y de npm, con sus versiones exactas, están en
-`src-tauri/Cargo.lock` y `package-lock.json`. Todas usan licencias permisivas
-(MIT, Apache-2.0, BSD, ISC o similares) y cada paquete incluye la suya.
+The other Rust and npm dependencies, with their exact versions, are listed in
+`src-tauri/Cargo.lock` and `package-lock.json`. They all use permissive licenses
+(MIT, Apache-2.0, BSD, ISC or similar), and each package includes its own.
 
-## Fuentes
+## Fonts
 
-Todas con [SIL Open Font License 1.1](licenses/OFL-1.1.txt), empaquetadas desde
+All under the [SIL Open Font License 1.1](licenses/OFL-1.1.txt), packaged by
 [Fontsource](https://fontsource.org):
 
 - **Instrument Serif**: © The Instrument Serif Project Authors

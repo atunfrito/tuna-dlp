@@ -4,26 +4,27 @@
   import Interruptor from "../lib/Interruptor.svelte";
   import { version } from "../../package.json";
   import { ajustes, app, comprobar, actualizar } from "../lib/estado.svelte.js";
+  import { t, tError } from "../lib/i18n.svelte.js";
 
   // [título, pista, botón, fondo] por estado, tal cual el prototipo.
   const U = $derived({
-    idle: ["yt-dlp está al día", "comprueba si hay versión nueva", "comprobar", "rgba(37, 31, 25, 0.04)"],
-    checking: ["preguntando a github…", "un segundo", "", "rgba(37, 31, 25, 0.04)"],
-    available: ["hay una versión nueva: " + app.ultima, "youtube cambia cosas a menudo. actualizar suele arreglar descargas que fallan.", "actualizar", "#fbe3e6"],
-    updating: ["actualizando yt-dlp…", "no cierres la ventana", "", "#fbe3e6"],
-    ok: ["actualizado a " + app.ytv, "listo. ya puedes seguir descargando.", "comprobar otra vez", "#dcefe2"],
-    error: ["", "", "comprobar", "#fbe3e6"],
+    idle: [t("upd.idle"), t("upd.idle_pista"), t("upd.comprobar"), "rgba(37, 31, 25, 0.04)"],
+    checking: [t("upd.checking"), t("upd.checking_pista"), "", "rgba(37, 31, 25, 0.04)"],
+    available: [t("upd.available", { version: app.ultima }), t("upd.available_pista"), t("upd.actualizar"), "#fbe3e6"],
+    updating: [t("upd.updating"), t("upd.updating_pista"), "", "#fbe3e6"],
+    ok: [t("upd.ok", { version: app.ytv }), t("upd.ok_pista"), t("upd.otra_vez"), "#dcefe2"],
+    error: ["", "", t("upd.comprobar"), "#fbe3e6"],
   }[app.upd]);
 
   const accion = () => (app.upd === "available" ? actualizar() : comprobar());
 </script>
 
 <div class="vista">
-  <h1>ajustes<span class="acento">.</span></h1>
+  <h1>{t("aj.titulo")}<span class="acento">.</span></h1>
 
   <section class="papel">
     <span class="cinta"></span>
-    <span class="etiqueta">EL MOTOR</span>
+    <span class="etiqueta">{t("aj.motor")}</span>
     <div class="versiones">
       <div class="caja"><span class="nombre">tuna-dlp</span><span class="numero">{version}</span></div>
       <div class="caja"><span class="nombre">yt-dlp</span><span class="numero">{app.ytv || "…"}</span></div>
@@ -32,7 +33,7 @@
     <div class="actualizar" style="background: {U[3]}">
       <span class="textos">
         {#if app.upd === "error"}
-          <span class="fallo" data-seleccionable>{app.updError}</span>
+          <span class="fallo" data-seleccionable>{tError(app.updError)}</span>
         {:else}
           <span class="upd-titulo">{U[0]}</span>
           <span class="upd-pista">{U[1]}</span>
@@ -43,62 +44,67 @@
       {/if}
     </div>
     <div class="grupo">
-      <span class="sub">canal de yt-dlp</span>
-      <Chips bind:valor={ajustes.canal} alCambiar={comprobar} opciones={[["stable", "estable"], ["nightly", "nightly"]]} />
+      <span class="sub">{t("aj.canal")}</span>
+      <Chips bind:valor={ajustes.canal} alCambiar={comprobar} opciones={[["stable", t("aj.estable")], ["nightly", "nightly"]]} />
     </div>
   </section>
 
   <section class="papel">
-    <span class="etiqueta">DESCARGAS</span>
+    <span class="etiqueta">{t("aj.descargas")}</span>
     <div class="opcion">
-      <span class="textos"><span class="titulo-op">a la vez</span><span class="pista">cuántas descargas en paralelo</span></span>
+      <span class="textos"><span class="titulo-op">{t("aj.a_la_vez")}</span><span class="pista">{t("aj.a_la_vez_pista")}</span></span>
       <Chips bind:valor={ajustes.paralelo} opciones={[1, 2, 3, 4, 5].map((n) => [n, String(n)])} />
     </div>
     <div class="opcion">
-      <span class="textos"><span class="titulo-op">límite de velocidad</span><span class="pista">para no dejar sin internet al resto de la casa</span></span>
-      <Chips bind:valor={ajustes.velocidad} opciones={["sin límite", "10 MB/s", "5 MB/s", "2 MB/s"].map((v) => [v, v])} />
+      <span class="textos"><span class="titulo-op">{t("aj.velocidad")}</span><span class="pista">{t("aj.velocidad_pista")}</span></span>
+      <Chips bind:valor={ajustes.velocidad} opciones={["sin límite", "10 MB/s", "5 MB/s", "2 MB/s"].map((v) => [v, v === "sin límite" ? t("aj.sin_limite") : v])} />
     </div>
     <div class="opcion">
-      <span class="textos"><span class="titulo-op">cookies del navegador</span><span class="pista">para vídeos con edad o solo para miembros</span></span>
-      <Chips bind:valor={ajustes.navegador} opciones={["ninguno", "firefox", "brave", "chrome"].map((v) => [v, v])} />
+      <span class="textos"><span class="titulo-op">{t("aj.cookies")}</span><span class="pista">{t("aj.cookies_pista")}</span></span>
+      <Chips bind:valor={ajustes.navegador} opciones={["ninguno", "firefox", "brave", "chrome"].map((v) => [v, v === "ninguno" ? t("aj.ninguno") : v])} />
     </div>
     <div class="interruptores">
-      <Interruptor borde="arriba" bind:valor={ajustes.abrirConWindows} etiqueta="abrir con windows" pista="arranca escondida en la bandeja" />
-      <Interruptor borde="arriba" bind:valor={ajustes.portapapeles} etiqueta="vigilar el portapapeles" pista="pega sola la url al abrir la app" />
-      <Interruptor borde="arriba" bind:valor={ajustes.avisar} etiqueta="avisar al terminar" pista="un aviso abajo a la derecha" />
-      <Interruptor borde="arriba" bind:valor={ajustes.abrirAlTerminar} etiqueta="abrir la carpeta al terminar" />
-      <Interruptor borde="arriba" bind:valor={ajustes.archivo} etiqueta="no repetir descargas" pista="lleva un registro de lo ya bajado" />
+      <Interruptor borde="arriba" bind:valor={ajustes.abrirConWindows} etiqueta={t("aj.con_windows")} pista={t("aj.con_windows_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.portapapeles} etiqueta={t("aj.portapapeles")} pista={t("aj.portapapeles_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.avisar} etiqueta={t("aj.avisar")} pista={t("aviso_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.abrirAlTerminar} etiqueta={t("aj.abrir_al_terminar")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.archivo} etiqueta={t("aj.archivo")} pista={t("aj.archivo_pista")} />
     </div>
   </section>
 
   <section class="papel">
-    <span class="etiqueta">FUNCIONES OPCIONALES</span>
-    <span class="aviso">apagadas por defecto para no liarte. enciende las que uses.</span>
+    <span class="etiqueta">{t("aj.opcionales")}</span>
+    <span class="aviso">{t("aj.opcionales_pista")}</span>
     <div class="interruptores">
-      <Interruptor borde="arriba" bind:valor={ajustes.verComando} etiqueta="ver el comando" pista="enseña qué le pide tuna-dlp a yt-dlp por debajo" />
-      <Interruptor borde="arriba" bind:valor={ajustes.recortar} etiqueta="recortar vídeos" pista="bajar solo un trozo, de tal minuto a tal otro" />
-      <Interruptor borde="arriba" bind:valor={ajustes.plantilla} etiqueta="plantilla de nombres" pista="decidir cómo se llama cada archivo" />
-      <Interruptor borde="arriba" bind:valor={ajustes.historial} etiqueta="historial" pista="todo lo que has bajado, con buscador" />
-      <Interruptor borde="arriba" bind:valor={ajustes.suscripciones} etiqueta="suscripciones" pista="seguir canales y bajar solo lo nuevo" />
+      <Interruptor borde="arriba" bind:valor={ajustes.verComando} etiqueta={t("aj.comando")} pista={t("aj.comando_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.recortar} etiqueta={t("aj.recortar")} pista={t("aj.recortar_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.plantilla} etiqueta={t("aj.plantilla")} pista={t("aj.plantilla_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.historial} etiqueta={t("aj.historial")} pista={t("aj.historial_pista")} />
+      <Interruptor borde="arriba" bind:valor={ajustes.suscripciones} etiqueta={t("aj.suscripciones")} pista={t("aj.suscripciones_pista")} />
     </div>
   </section>
 
   <section class="papel">
-    <span class="etiqueta">APARIENCIA</span>
+    <span class="etiqueta">{t("aj.apariencia")}</span>
     <div class="opcion">
-      <span class="titulo-op">tema</span>
-      <Chips bind:valor={ajustes.tema} opciones={[["light", "claro"], ["dark", "oscuro"], ["system", "sistema"]]} />
+      <span class="titulo-op">{t("aj.tema")}</span>
+      <Chips bind:valor={ajustes.tema} opciones={[["light", t("aj.claro")], ["dark", t("aj.oscuro")], ["system", t("aj.sistema")]]} />
+    </div>
+    <div class="opcion">
+      <span class="titulo-op">{t("aj.idioma")}</span>
+      <!-- Cada idioma con su propio nombre, para encontrarlo aunque no entiendas el otro. -->
+      <Chips bind:valor={ajustes.idioma} opciones={[["es", "español"], ["en", "english"], ["system", t("aj.sistema")]]} />
     </div>
   </section>
 
   <section class="nota">
     <span class="textos">
-      <span class="mano">hecho en la cueva</span>
-      <span class="explica">tuna-dlp es una interfaz para yt-dlp. sin cuentas, sin telemetría, sin nada que mande datos a ningún sitio.</span>
+      <span class="mano">{t("aj.cueva")}</span>
+      <span class="explica">{t("aj.cueva_texto")}</span>
     </span>
     <div class="enlaces">
       <button type="button" class="enlace" onclick={() => invoke("abrir_web")}>atunfrito.es ↗</button>
-      <button type="button" class="enlace" onclick={() => invoke("abrir_registros")}>abrir registros</button>
+      <button type="button" class="enlace" onclick={() => invoke("abrir_registros")}>{t("aj.registros")}</button>
     </div>
   </section>
 </div>

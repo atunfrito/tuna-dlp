@@ -7,6 +7,7 @@ import { cola, control, activas, progreso, encolar, pausarTodo, reanudarTodo } f
 import { argumentos, recorte } from "./comando.js";
 import { queEs } from "./formato.js";
 import { enLaBandeja } from "./avisos.js";
+import { t, idioma } from "./i18n.svelte.js";
 
 const esUrl = (t) => /^https?:\/\/\S+$/i.test(t);
 
@@ -24,9 +25,9 @@ async function pegarYDescargar() {
 
 function resumen() {
   const n = activas();
-  if (n) return n + " descargando · " + Math.floor((progreso() ?? 0) * 100) + " %";
-  if (control.pausado && cola.some((d) => d.estado === "pausa")) return "en pausa";
-  return "nada descargando";
+  if (n) return t("bandeja.descargando", { n, pct: Math.floor((progreso() ?? 0) * 100) });
+  if (control.pausado && cola.some((d) => d.estado === "pausa")) return t("bandeja.pausa");
+  return t("bandeja.nada");
 }
 
 if (enTauri) {
@@ -54,13 +55,13 @@ if (enTauri) {
         activas() ? (errores ? "error" : "normal")
           : control.pausado && p != null && p < 1 ? "paused"
           : "none";
-      const datos = { estado, pausado: control.pausado, status, p, activas: activas(), tema: temaEfectivo() };
+      const datos = { estado, pausado: control.pausado, status, p, activas: activas(), tema: temaEfectivo(), idioma: idioma() };
       if (pendiente) return void (pendiente.datos = datos);
       pendiente = { datos };
       setTimeout(() => {
         const { datos: d } = pendiente;
         pendiente = null;
-        invoke("bandeja", { estado: d.estado, pausado: d.pausado, progreso: d.p, activas: d.activas, tema: d.tema }).catch(() => {});
+        invoke("bandeja", { estado: d.estado, pausado: d.pausado, progreso: d.p, activas: d.activas, tema: d.tema, idioma: d.idioma }).catch(() => {});
         invoke("progreso_icono", { estado: d.status, progreso: d.p ?? 0 }).catch(() => {});
       }, 500);
     });

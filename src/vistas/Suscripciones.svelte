@@ -2,6 +2,7 @@
   import Interruptor from "../lib/Interruptor.svelte";
   import { ajustes, form } from "../lib/estado.svelte.js";
   import { ocupados, seguir, quitar, comprobar } from "../lib/canales.svelte.js";
+  import { t, tError } from "../lib/i18n.svelte.js";
 
   let url = $state("");
   let anadiendo = $state(false);
@@ -21,25 +22,25 @@
     }
   }
 
-  const estado = (c) => (c.error ? "error" : c.nuevos ? c.nuevos + (c.nuevos === 1 ? " nuevo" : " nuevos") : "al día");
+  const estado = (c) => (c.error ? t("subs.error") : c.nuevos === 1 ? t("subs.nuevo") : c.nuevos ? t("subs.nuevos", { n: c.nuevos }) : t("subs.al_dia"));
   const corta = (u) => u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/videos$/, "");
 </script>
 
 <div class="vista">
   <div class="intro">
-    <h1>suscripciones<span class="acento">.</span></h1>
-    <span class="entradilla">añade un canal y tuna-dlp baja solo lo nuevo cada vez que abres la app.</span>
+    <h1>{t("subs.titulo")}<span class="acento">.</span></h1>
+    <span class="entradilla">{t("subs.entradilla")}</span>
   </div>
 
   <section class="papel">
     <span class="cinta"></span>
-    <span class="etiqueta">AÑADIR CANAL</span>
+    <span class="etiqueta">{t("subs.anadir_canal")}</span>
     <form class="anadir" onsubmit={(e) => { e.preventDefault(); anadir(); }}>
-      <input class="campo" bind:value={url} placeholder="youtube.com/@canal" spellcheck="false" disabled={anadiendo} />
-      <button type="submit" class="primario" disabled={anadiendo || !url.trim()}>añadir</button>
+      <input class="campo" bind:value={url} placeholder={t("subs.ejemplo")} spellcheck="false" disabled={anadiendo} />
+      <button type="submit" class="primario" disabled={anadiendo || !url.trim()}>{t("subs.anadir")}</button>
     </form>
     {#if anadiendo}<span class="barra-carga"></span>{/if}
-    {#if fallo}<span class="fallo" data-seleccionable>{fallo}</span>{/if}
+    {#if fallo}<span class="fallo" data-seleccionable>{tError(fallo)}</span>{/if}
   </section>
 
   <section class="papel lista">
@@ -47,19 +48,19 @@
       <div class="canal">
         <div class="textos">
           <span class="nombre">{c.nombre}</span>
-          <span class="meta" class:error={c.error} title={c.error || null}>{corta(c.url)} · {estado(c)}</span>
+          <span class="meta" class:error={c.error} title={tError(c.error) || null}>{corta(c.url)} · {estado(c)}</span>
         </div>
-        <button type="button" class="boton" disabled={ocupados.has(c.id)} onclick={() => comprobar(c)}>comprobar ahora</button>
-        <button type="button" class="boton quitar" onclick={() => quitar(c)}>quitar</button>
+        <button type="button" class="boton" disabled={ocupados.has(c.id)} onclick={() => comprobar(c)}>{t("subs.comprobar")}</button>
+        <button type="button" class="boton quitar" onclick={() => quitar(c)}>{t("subs.quitar")}</button>
       </div>
     {:else}
-      <div class="vacia">todavía no sigues a nadie. empieza por uno que te guste.</div>
+      <div class="vacia">{t("subs.vacia")}</div>
     {/each}
   </section>
 
   <section class="papel interruptores">
-    <Interruptor borde="abajo" bind:valor={ajustes.comprobarAlAbrir} etiqueta="comprobar al abrir la app" pista="baja lo nuevo sin que tengas que hacer nada" />
-    <Interruptor borde="ninguno" bind:valor={ajustes.avisarNuevos} etiqueta="avisar de vídeos nuevos" pista="un aviso abajo a la derecha" />
+    <Interruptor borde="abajo" bind:valor={ajustes.comprobarAlAbrir} etiqueta={t("subs.al_abrir")} pista={t("subs.al_abrir_pista")} />
+    <Interruptor borde="ninguno" bind:valor={ajustes.avisarNuevos} etiqueta={t("subs.avisar")} pista={t("aviso_pista")} />
   </section>
 </div>
 

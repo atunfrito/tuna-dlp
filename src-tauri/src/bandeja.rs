@@ -42,13 +42,14 @@ pub struct Estado {
     progreso: Option<f64>,
     activas: u32,
     tema: String,
+    idioma: String,
 }
 
 #[derive(Default)]
 pub struct Bandeja(Mutex<Estado>);
 
 pub fn crear(app: &AppHandle, tema: &str) -> tauri::Result<()> {
-    app.manage(Bandeja(Mutex::new(Estado { estado: "nada descargando".into(), tema: tema.into(), ..Default::default() })));
+    app.manage(Bandeja(Mutex::new(Estado { tema: tema.into(), ..Default::default() })));
 
     let inicio = json!({ "ajustes": { "tema": tema }, "rutas": {}, "menu": true });
     let menu = WebviewWindowBuilder::new(app, "menu", WebviewUrl::default())
@@ -184,8 +185,8 @@ pub fn mostrar_ventana(app: AppHandle) {
 
 /// La ventana principal cuenta cómo va la cola; el menú lo pinta.
 #[tauri::command]
-pub fn bandeja(app: AppHandle, estado: String, pausado: bool, progreso: Option<f64>, activas: u32, tema: String) {
-    let nuevo = Estado { estado, pausado, progreso, activas, tema };
+pub fn bandeja(app: AppHandle, estado: String, pausado: bool, progreso: Option<f64>, activas: u32, tema: String, idioma: String) {
+    let nuevo = Estado { estado, pausado, progreso, activas, tema, idioma };
     if let Some(b) = app.try_state::<Bandeja>() {
         *b.0.lock().unwrap() = nuevo.clone();
     }

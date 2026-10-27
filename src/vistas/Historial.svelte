@@ -6,6 +6,7 @@
   import { historial } from "../lib/historial.svelte.js";
   import { normal } from "../lib/idiomas.js";
   import { tam, cuando } from "../lib/formato.js";
+  import { t } from "../lib/i18n.svelte.js";
 
   let busca = $state("");
   const encontradas = $derived.by(() => {
@@ -20,13 +21,13 @@
 
 <div class="vista">
   <div class="cabecera">
-    <h1>historial<span class="acento">.</span></h1>
+    <h1>{t("hist.titulo")}<span class="acento">.</span></h1>
     {#if historial.entradas.length}
       <label class="buscador">
         <Search size={16} strokeWidth={2} />
-        <input bind:value={busca} placeholder="buscar en lo que has bajado" spellcheck="false" />
+        <input bind:value={busca} placeholder={t("hist.buscar")} spellcheck="false" />
         {#if busca}
-          <button type="button" class="borrar" aria-label="borrar la búsqueda" onclick={() => (busca = "")}>
+          <button type="button" class="borrar" aria-label={t("hist.borrar")} onclick={() => (busca = "")}>
             <X size={14} strokeWidth={2.25} />
           </button>
         {/if}
@@ -35,7 +36,7 @@
   </div>
 
   {#if !historial.entradas.length}
-    <div class="vacio">todavía no has bajado nada. lo que bajes irá apareciendo aquí.</div>
+    <div class="vacio">{t("hist.vacio")}</div>
   {:else}
     <section class="papel">
       {#each encontradas.slice(0, MAX) as e (e.fecha + e.ruta)}
@@ -45,10 +46,10 @@
             <span class="titulo" title={e.titulo}>{e.titulo}</span>
             <span class="meta">{[cuando(e.fecha), e.formato, tam(e.tamano)].filter(Boolean).join(" · ")}</span>
           </div>
-          <button type="button" class="boton" onclick={() => abrir(e)}>abrir carpeta</button>
+          <button type="button" class="boton" onclick={() => abrir(e)}>{t("abrir_carpeta")}</button>
         </div>
       {:else}
-        <div class="vacia">no has bajado nada que se llame así.</div>
+        <div class="vacia">{t("hist.nada")}</div>
       {/each}
     </section>
   {/if}

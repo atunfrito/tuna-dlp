@@ -7,10 +7,10 @@ export const PLANTILLA = "%(title)s.%(ext)s";
 export const PLANTILLA_VIEJA = "%(title)s [%(id)s].%(ext)s";
 
 export const PLANTILLAS = [
-  ["%(title)s.%(ext)s", "título"],
-  ["%(uploader)s/%(title)s.%(ext)s", "canal / título"],
-  ["%(upload_date)s - %(title)s.%(ext)s", "fecha + título"],
-  ["%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s", "lista / nº"],
+  ["%(title)s.%(ext)s", "plantilla.titulo"],
+  ["%(uploader)s/%(title)s.%(ext)s", "plantilla.canal"],
+  ["%(upload_date)s - %(title)s.%(ext)s", "plantilla.fecha"],
+  ["%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s", "plantilla.lista"],
 ];
 
 // Qué vídeos de la playlist bajar: [true, false, true, true] → "1,3:4".
@@ -72,10 +72,10 @@ export function recorte(o) {
 }
 
 // Para enseñarlo: comillas solo donde la terminal las necesitaría.
-export function comoTexto(args, url, corte = null) {
+export function comoTexto(args, url, corte = null, archivo = "ARCHIVO") {
   const q = (v) => (/^[\w.,:/=+@%-]+$/.test(v) ? v : '"' + v.replace(/"/g, '\\"') + '"');
   const texto = ["yt-dlp", ...args, url || "URL"].map(q).join(" ");
   if (!corte) return texto;
   const tramo = ["-ss", corte.desde || "0", ...(corte.hasta ? ["-to", corte.hasta] : [])];
-  return texto + " && ffmpeg " + tramo.join(" ") + " -i ARCHIVO …";
+  return texto + " && ffmpeg " + tramo.join(" ") + " -i " + archivo + " …";
 }

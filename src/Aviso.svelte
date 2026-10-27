@@ -2,8 +2,10 @@
   // La ventanita de avisos (ver src-tauri/src/aviso.rs). Los textos llegan ya
   // montados desde lib/avisos.js.
   import { invoke } from "@tauri-apps/api/core";
+  import { traducir, idiomaDe } from "./lib/textos.js";
 
   const a = window.__TUNA__.aviso;
+  const tr = (clave) => traducir(idiomaDe(a.idioma), clave);
   const DURA = 7000;
 
   let visible = $state(false);
@@ -50,11 +52,11 @@
         <span class="titulo">{a.titulo}</span>
         {#if a.texto}<span class="texto">{a.texto}</span>{/if}
       </div>
-      <button type="button" class="cerrar" aria-label="cerrar" onclick={(e) => { e.stopPropagation(); cerrar(); }}>×</button>
+      <button type="button" class="cerrar" aria-label={tr("cerrar")} onclick={(e) => { e.stopPropagation(); cerrar(); }}>×</button>
     </div>
     {#if a.carpeta}
       <div class="pie">
-        <button type="button" class="boton" onclick={abrirCarpeta}>abrir carpeta</button>
+        <button type="button" class="boton" onclick={abrirCarpeta}>{tr("abrir_carpeta")}</button>
       </div>
     {/if}
   </div>

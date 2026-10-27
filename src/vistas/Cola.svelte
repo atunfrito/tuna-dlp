@@ -2,14 +2,16 @@
   import { cola, cancelar, reintentar, reanudarTodo, abrir, limpiarTerminadas } from "../lib/cola.svelte.js";
   import { tam } from "../lib/formato.js";
   import Fallo from "../lib/Fallo.svelte";
+  import { t } from "../lib/i18n.svelte.js";
 
-  const ETIQUETAS = {
-    cola: ["en cola", "var(--paper-dim)", "rgba(37, 31, 25, 0.07)"],
-    dl: ["descargando", "#c8102e", "#fbe3e6"],
-    proc: ["procesando", "#8a5a12", "#f6e6b8"],
-    pausa: ["en pausa", "#8a5a12", "#f6e6b8"],
-    done: ["hecho", "#2f7a4c", "#dcefe2"],
-    err: ["error", "#fff", "#c8102e"],
+  // [color del texto, fondo] de la etiqueta de cada estado.
+  const COLORES = {
+    cola: ["var(--paper-dim)", "rgba(37, 31, 25, 0.07)"],
+    dl: ["#c8102e", "#fbe3e6"],
+    proc: ["#8a5a12", "#f6e6b8"],
+    pausa: ["#8a5a12", "#f6e6b8"],
+    done: ["#2f7a4c", "#dcefe2"],
+    err: ["#fff", "#c8102e"],
   };
 
   function tiempo(s) {
@@ -21,15 +23,15 @@
   const pct = (d) => (d.total ? Math.min(100, (d.bajado / d.total) * 100) : 0);
 
   function meta(d) {
-    if (d.estado === "done") return ["hecho", tam(d.tamano), d.que].filter(Boolean).join(" · ");
+    if (d.estado === "done") return [t("estado.done"), tam(d.tamano), d.que].filter(Boolean).join(" · ");
     if (d.estado === "proc") {
-      return d.paso === "Merger" ? "uniendo audio y vídeo con ffmpeg…" : "procesando con ffmpeg…";
+      return d.paso === "Merger" ? t("cola.uniendo") : t("cola.procesando");
     }
     if (d.estado === "dl" && d.total) {
       return [
         Math.floor(pct(d)) + " %",
         d.velocidad != null && tam(d.velocidad) + "/s",
-        d.eta != null && "quedan " + tiempo(d.eta),
+        d.eta != null && t("cola.quedan", { tiempo: tiempo(d.eta) }),
         tam(d.total),
       ].filter(Boolean).join(" · ");
     }
@@ -43,21 +45,22 @@
   }
 
   function accion(d) {
-    if (d.estado === "done") return ["abrir carpeta", () => abrir(d)];
-    if (d.estado === "err") return ["reintentar", () => reintentar(d)];
-    if (d.estado === "pausa") return ["reanudar", reanudarTodo];
-    return ["cancelar", () => cancelar(d)];
+    if (d.estado === "done") return [t("abrir_carpeta"), () => abrir(d)];
+    if (d.estado === "err") return [t("cola.reintentar"), () => reintentar(d)];
+    if (d.estado === "pausa") return [t("cola.reanudar"), reanudarTodo];
+    return [t("cola.cancelar"), () => cancelar(d)];
   }
 </script>
 
 <div class="vista">
   <div class="cabecera">
-    <h1>la cola<span class="acento">.</span></h1>
-    <button type="button" class="limpiar" onclick={limpiarTerminadas}>limpiar terminadas</button>
+    <h1>{t("cola.titulo")}<span class="acento">.</span></h1>
+    <button type="button" class="limpiar" onclick={limpiarTerminadas}>{t("cola.limpiar")}</button>
   </div>
 
   {#each cola as d (d.id)}
-    {@const [tag, fg, bg] = ETIQUETAS[d.estado]}
+    {@const [fg, bg] = COLORES[d.estado]}
+    {@const tag = t("estado." + d.estado)}
     {@const [etiqueta, hacer] = accion(d)}
     <div class="fila">
       {#if d.miniatura}
@@ -80,7 +83,7 @@
       <button type="button" class="accion" onclick={hacer}>{etiqueta}</button>
     </div>
   {:else}
-    <div class="vacia">nada en la sartén. pega un enlace y le damos caña.</div>
+    <div class="vacia">{t("cola.vacia")}</div>
   {/each}
 </div>
 

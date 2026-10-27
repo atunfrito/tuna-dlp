@@ -22,6 +22,7 @@
   import { nombresDe } from "../lib/idiomas.js";
   import SelectorIdiomas from "../lib/SelectorIdiomas.svelte";
   import { queEs } from "../lib/formato.js";
+  import { t } from "../lib/i18n.svelte.js";
 
   const esUrl = (t) => /^https?:\/\/\S+$/i.test(t);
   const sinPreset = () => (form.preset = null);
@@ -29,9 +30,9 @@
   const lineas = $derived([...new Set(form.urls.split("\n").map((l) => l.trim()).filter(Boolean))]);
   // Con la función apagada, lo que quedara escrito en el recorte no cuenta.
   const corte = $derived(ajustes.recortar ? recorte(form) : null);
-  const comando = $derived(comoTexto(argsDe(lineas[0]), lineas[0], corte));
+  const comando = $derived(comoTexto(argsDe(lineas[0]), lineas[0], corte, t("dl.archivo")));
   const que = $derived(queEs(form));
-  const resumen = $derived(lineas.length + (lineas.length === 1 ? " url" : " urls") + " · " + que);
+  const resumen = $derived(t(lineas.length === 1 ? "url" : "urls", { n: lineas.length }) + " · " + que);
 
   function aplicarPreset(nombre) {
     Object.assign(form, PRESETS[nombre], { preset: nombre });
@@ -40,8 +41,9 @@
   // --- presets propios ------------------------------------------------------
   function guardarPreset() {
     const usados = new Set(ajustes.presets.map((p) => p.nombre));
-    let nombre = "mi preset", n = 1;
-    while (usados.has(nombre)) nombre = "mi preset " + ++n;
+    const base = t("dl.mi_preset");
+    let nombre = base, n = 1;
+    while (usados.has(nombre)) nombre = base + " " + ++n;
     const valores = Object.fromEntries(CAMPOS_PRESET.map((k) => [k, form[k]]));
     ajustes.presets.push({ nombre, valores });
     form.preset = nombre;
@@ -148,30 +150,30 @@
 <div class="vista">
   <div class="cabecera">
     <!-- Solo el punto de la "?" en rojo: encima, una copia roja recortada desde 0.72em. -->
-    <h1>¿qué nos bajamos hoy<span class="interrogacion">?<span class="punto" aria-hidden="true"><span>?</span></span></span></h1>
+    <h1>{t("dl.titular")}<span class="interrogacion">?<span class="punto" aria-hidden="true"><span>?</span></span></span></h1>
     <div class="atajos">
-      <span class="mano">atajos →</span>
+      <span class="mano">{t("dl.atajos")}</span>
       {#each Object.keys(PRESETS) as nombre}
-        <button type="button" class="preset" class:on={form.preset === nombre} onclick={() => aplicarPreset(nombre)}>{nombre}</button>
+        <button type="button" class="preset" class:on={form.preset === nombre} onclick={() => aplicarPreset(nombre)}>{t("preset." + nombre)}</button>
       {/each}
       {#each ajustes.presets as p (p.nombre)}
         <span class="propio" class:on={form.preset === p.nombre}>
           <button type="button" class="preset" onclick={() => aplicarPropio(p)}>{p.nombre}</button>
-          <button type="button" class="borrar" title="borrar este preset" aria-label="borrar {p.nombre}" onclick={() => borrarPreset(p)}>×</button>
+          <button type="button" class="borrar" title={t("dl.borrar_preset")} aria-label={t("dl.borrar", { nombre: p.nombre })} onclick={() => borrarPreset(p)}>×</button>
         </span>
       {/each}
-      <button type="button" class="guardar" title="guarda lo que tienes elegido como atajo" onclick={guardarPreset}>+ guardar</button>
+      <button type="button" class="guardar" title={t("dl.guardar_pista")} onclick={guardarPreset}>{t("dl.guardar")}</button>
     </div>
   </div>
 
   <section class="papel urls">
     <span class="cinta"></span>
     <div class="entre">
-      <span class="etiqueta">LAS URLS · UNA POR LÍNEA</span>
-      {#if pegada && form.urls === pegada}<span class="pegada">● pegada del portapapeles</span>{/if}
+      <span class="etiqueta">{t("dl.urls")}</span>
+      {#if pegada && form.urls === pegada}<span class="pegada">{t("dl.pegada")}</span>{/if}
     </div>
     <textarea bind:value={form.urls} rows="2" spellcheck="false" placeholder="https://www.youtube.com/watch?v=..."></textarea>
-    <span class="arrastra">o arrastra un enlace desde el navegador</span>
+    <span class="arrastra">{t("dl.arrastra")}</span>
 
     {#each lineas.filter((u) => previas[u]) as u (u)}
       {@const p = previas[u]}
@@ -199,11 +201,11 @@
   {#if lista}
     <section class="papel lista">
       <div class="entre">
-        <span class="etiqueta">LA LISTA{lista.entradas ? ` · ${marcadas} DE ${lista.entradas.length}` : ""}</span>
+        <span class="etiqueta">{lista.entradas ? t("dl.lista_cuenta", { n: marcadas, total: lista.entradas.length }) : t("dl.lista")}</span>
         {#if lista.entradas}
           <div class="botones-lista">
-            <button type="button" class="secundario chico" onclick={() => marcarTodos(true)}>todos</button>
-            <button type="button" class="secundario chico" onclick={() => marcarTodos(false)}>ninguno</button>
+            <button type="button" class="secundario chico" onclick={() => marcarTodos(true)}>{t("dl.todos")}</button>
+            <button type="button" class="secundario chico" onclick={() => marcarTodos(false)}>{t("dl.ninguno")}</button>
           </div>
         {/if}
       </div>
@@ -230,78 +232,78 @@
 
   <div class="rejilla">
     <section class="papel">
-      <span class="etiqueta">QUÉ QUIERES</span>
-      <Chips bind:valor={form.mode} alCambiar={sinPreset} opciones={[["video", "vídeo"], ["audio", "solo audio"], ["subs", "subtítulos"]]} />
+      <span class="etiqueta">{t("dl.que")}</span>
+      <Chips bind:valor={form.mode} alCambiar={sinPreset} opciones={[["video", t("modo.video")], ["audio", t("modo.audio")], ["subs", t("modo.subs")]]} />
       {#if form.mode === "video"}
         <div class="grupos">
           <div class="grupo">
-            <span class="sub">calidad</span>
-            <Chips bind:valor={form.quality} alCambiar={sinPreset} opciones={[["best", "máxima"], ["2160", "4K"], ["1440", "1440p"], ["1080", "1080p"], ["720", "720p"], ["480", "480p"], ["360", "360p"]]} />
+            <span class="sub">{t("dl.calidad")}</span>
+            <Chips bind:valor={form.quality} alCambiar={sinPreset} opciones={[["best", t("dl.maxima")], ["2160", "4K"], ["1440", "1440p"], ["1080", "1080p"], ["720", "720p"], ["480", "480p"], ["360", "360p"]]} />
           </div>
           <div class="grupo">
-            <span class="sub">contenedor</span>
+            <span class="sub">{t("dl.contenedor")}</span>
             <Chips bind:valor={form.container} alCambiar={sinPreset} opciones={[["mp4", "mp4"], ["mkv", "mkv"], ["webm", "webm"]]} />
           </div>
           <div class="grupo">
-            <span class="sub">códec</span>
-            <Chips bind:valor={form.codec} alCambiar={sinPreset} opciones={[["any", "da igual"], ["h264", "h264"], ["vp9", "vp9"], ["av01", "av1"]]} />
+            <span class="sub">{t("dl.codec")}</span>
+            <Chips bind:valor={form.codec} alCambiar={sinPreset} opciones={[["any", t("dl.da_igual")], ["h264", "h264"], ["vp9", "vp9"], ["av01", "av1"]]} />
           </div>
         </div>
       {:else if form.mode === "audio"}
         <div class="grupos">
           <div class="grupo">
-            <span class="sub">formato</span>
+            <span class="sub">{t("dl.formato")}</span>
             <Chips bind:valor={form.afmt} alCambiar={sinPreset} opciones={["mp3", "m4a", "opus", "flac", "wav", "vorbis"].map((f) => [f, f])} />
           </div>
           <div class="grupo">
-            <span class="sub">bitrate</span>
-            <Chips bind:valor={form.abr} alCambiar={sinPreset} opciones={[["best", "máxima"], ["320", "320k"], ["256", "256k"], ["192", "192k"], ["128", "128k"]]} />
+            <span class="sub">{t("dl.bitrate")}</span>
+            <Chips bind:valor={form.abr} alCambiar={sinPreset} opciones={[["best", t("dl.maxima")], ["320", "320k"], ["256", "256k"], ["192", "192k"], ["128", "128k"]]} />
           </div>
         </div>
       {:else}
         <div class="grupo">
-          <span class="sub">idiomas</span>
+          <span class="sub">{t("dl.idiomas")}</span>
           <SelectorIdiomas bind:valor={form.langs} manuales={primera?.subtitulos ?? null} automaticos={primera?.automaticos ?? null} alCambiar={sinPreset} />
         </div>
       {/if}
     </section>
 
     <section class="papel extras">
-      <span class="etiqueta separada">EXTRAS</span>
-      <Interruptor bind:valor={form.thumb} alCambiar={sinPreset} etiqueta="miniatura" pista="incrustada en el archivo" />
-      <Interruptor bind:valor={form.meta} alCambiar={sinPreset} etiqueta="metadatos" pista="título, canal, fecha" />
-      <Interruptor bind:valor={form.chapters} alCambiar={sinPreset} etiqueta="capítulos" pista="si el vídeo los tiene" />
-      <Interruptor bind:valor={form.sponsor} alCambiar={sinPreset} etiqueta="quitar patrocinios" pista="vía sponsorblock" />
-      <Interruptor bind:valor={form.subs} alCambiar={sinPreset} etiqueta="subtítulos" pista={"incrustados: " + (nombresDe(form.langs) || "ningún idioma")} />
-      <Interruptor bind:valor={form.playlist} alCambiar={sinPreset} etiqueta="lista entera" pista="si la url es una playlist" />
+      <span class="etiqueta separada">{t("dl.extras")}</span>
+      <Interruptor bind:valor={form.thumb} alCambiar={sinPreset} etiqueta={t("x.miniatura")} pista={t("x.miniatura_pista")} />
+      <Interruptor bind:valor={form.meta} alCambiar={sinPreset} etiqueta={t("x.metadatos")} pista={t("x.metadatos_pista")} />
+      <Interruptor bind:valor={form.chapters} alCambiar={sinPreset} etiqueta={t("x.capitulos")} pista={t("x.capitulos_pista")} />
+      <Interruptor bind:valor={form.sponsor} alCambiar={sinPreset} etiqueta={t("x.patrocinios")} pista={t("x.patrocinios_pista")} />
+      <Interruptor bind:valor={form.subs} alCambiar={sinPreset} etiqueta={t("x.subtitulos")} pista={t("x.subtitulos_pista", { idiomas: nombresDe(form.langs) || t("x.ningun_idioma") })} />
+      <Interruptor bind:valor={form.playlist} alCambiar={sinPreset} etiqueta={t("x.lista")} pista={t("x.lista_pista")} />
     </section>
   </div>
 
   <div class="rejilla">
     {#if ajustes.recortar}
       <section class="papel">
-        <span class="etiqueta">RECORTAR</span>
+        <span class="etiqueta">{t("dl.recortar")}</span>
         <div class="recorte">
           <input class="campo tiempo" bind:value={form.start} placeholder="00:00" spellcheck="false" />
           <span class="flecha">→</span>
-          <input class="campo tiempo" bind:value={form.end} placeholder="final" spellcheck="false" />
+          <input class="campo tiempo" bind:value={form.end} placeholder={t("dl.final")} spellcheck="false" />
         </div>
       </section>
     {/if}
     <section class="papel">
-      <span class="etiqueta">SE GUARDA EN</span>
+      <span class="etiqueta">{t("dl.carpeta")}</span>
       <div class="carpeta">
         <span class="ruta" title={ajustes.carpeta} data-seleccionable>{ajustes.carpeta}</span>
         <button type="button" class="secundario" onclick={cambiarCarpeta}>
-          <Folder size={15} strokeWidth={1.75} />cambiar
+          <Folder size={15} strokeWidth={1.75} />{t("dl.cambiar")}
         </button>
       </div>
       {#if ajustes.plantilla}
-        <span class="etiqueta hueco-arriba">CÓMO SE LLAMA</span>
-        <Chips bind:valor={form.plantilla} alCambiar={sinPreset} opciones={PLANTILLAS} />
+        <span class="etiqueta hueco-arriba">{t("dl.nombre")}</span>
+        <Chips bind:valor={form.plantilla} alCambiar={sinPreset} opciones={PLANTILLAS.map(([v, clave]) => [v, t(clave)])} />
         <input class="campo" bind:value={form.plantilla} oninput={sinPreset} spellcheck="false" />
         <div class="quedara">
-          <span class="mano-roja">quedará así →</span>
+          <span class="mano-roja">{t("dl.quedara")}</span>
           <span class="muestra" data-seleccionable>{quedara}</span>
         </div>
       {/if}
@@ -311,7 +313,7 @@
   {#if ajustes.verComando}
   <section class="terminal">
     <button type="button" class="plegar" onclick={() => (cmdAbierto = !cmdAbierto)}>
-      <span>VER EL COMANDO</span>
+      <span>{t("dl.comando")}</span>
       <span class="chevron" class:abierto={cmdAbierto}>▾</span>
     </button>
     <div class="panel" class:abierto={cmdAbierto}>
@@ -325,7 +327,7 @@
   <div class="accion">
     <span class="resumen">{resumen}</span>
     <button type="button" class="descargar" onclick={descargar} disabled={bloqueado}>
-      <Download size={17} strokeWidth={2} />descargar
+      <Download size={17} strokeWidth={2} />{t("dl.descargar")}
     </button>
   </div>
 </div>

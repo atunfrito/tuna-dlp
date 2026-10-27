@@ -1,6 +1,7 @@
 <script>
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { enTauri } from "./estado.svelte.js";
+  import { t } from "./i18n.svelte.js";
 
   const ventana = enTauri ? getCurrentWindow() : null;
   let maximizada = $state(false);
@@ -17,10 +18,10 @@
 <header class="barra" data-tauri-drag-region>
   <span class="titulo" data-tauri-drag-region>tuna-dlp</span>
   <div class="botones">
-    <button type="button" aria-label="minimizar" onclick={() => ventana?.minimize()}>
+    <button type="button" aria-label={t("barra.minimizar")} onclick={() => ventana?.minimize()}>
       <svg width="11" height="11" viewBox="0 0 12 12"><line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.1" /></svg>
     </button>
-    <button type="button" aria-label={maximizada ? "restaurar" : "maximizar"} onclick={() => ventana?.toggleMaximize()}>
+    <button type="button" aria-label={maximizada ? t("barra.restaurar") : t("barra.maximizar")} onclick={() => ventana?.toggleMaximize()}>
       {#if maximizada}
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1">
           <rect x="1.5" y="3.5" width="7" height="7" rx="1.2" /><path d="M3.5 3.5V2.7c0-.7.5-1.2 1.2-1.2h4.6c.7 0 1.2.5 1.2 1.2v4.6c0 .7-.5 1.2-1.2 1.2h-.8" />
@@ -29,7 +30,7 @@
         <svg width="11" height="11" viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.1" /></svg>
       {/if}
     </button>
-    <button type="button" class="cerrar" aria-label="cerrar" onclick={() => ventana?.close()}>
+    <button type="button" class="cerrar" aria-label={t("cerrar")} onclick={() => ventana?.close()}>
       <svg width="11" height="11" viewBox="0 0 12 12"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9" stroke="currentColor" stroke-width="1.1" /></svg>
     </button>
   </div>

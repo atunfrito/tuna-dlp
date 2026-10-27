@@ -9,6 +9,8 @@ export const enTauri = "__TAURI_INTERNALS__" in window;
 
 const AJUSTES = {
   tema: "light",
+  // "system" sigue al idioma de Windows (ver lib/textos.js).
+  idioma: "system",
   carpeta: rutas.descargas,
   paralelo: 2,
   velocidad: "sin límite",

@@ -1,6 +1,8 @@
-// Nombres de idioma en español para los subtítulos.
+// Nombres de idioma (en el idioma de la app) para los subtítulos.
+import { idioma } from "./i18n.svelte.js";
 
-const nombres = new Intl.DisplayNames(["es"], { type: "language", fallback: "code" });
+const cache = {};
+const nombres = () => (cache[idioma()] ??= new Intl.DisplayNames([idioma()], { type: "language", fallback: "code" }));
 
 // Los que salen primero cuando aún no se ha escrito nada.
 export const COMUNES = ["es", "en", "es-419", "ca", "gl", "eu", "fr", "de", "it", "pt", "ja", "ko"];
@@ -24,7 +26,7 @@ export const TODOS = [
 
 export function nombre(codigo) {
   try {
-    const n = nombres.of(codigo);
+    const n = nombres().of(codigo);
     return n === codigo ? codigo : n.toLowerCase();
   } catch {
     return codigo;

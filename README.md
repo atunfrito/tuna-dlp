@@ -1,190 +1,181 @@
+<p align="center"><b>English</b> · <a href="README.es.md">Español</a></p>
+
 <p align="center">
-  <img src="brand/tunadlp-icono.svg" width="96" alt="icono de tuna-dlp">
+  <img src="brand/tunadlp-icono.svg" width="96" alt="tuna-dlp icon">
 </p>
 
 <h1 align="center">tuna-dlp</h1>
 
-<p align="center"><b>Una interfaz sencilla para Windows que usa yt-dlp y ffmpeg.</b></p>
+<p align="center"><b>A simple Windows GUI for yt-dlp and ffmpeg.</b></p>
 
 <p align="center">
-  <a href="https://github.com/atunfrito/tuna-dlp/releases/latest">Descargar</a> ·
-  <a href="#compilarlo-desde-el-código">Compilarlo</a> ·
-  <a href="#in-english">In English</a>
+  <a href="https://github.com/atunfrito/tuna-dlp/releases/latest">Download</a> ·
+  <a href="#building-from-source">Build from source</a>
 </p>
 
 ---
 
-tuna-dlp **no** es un descargador nuevo. Todo el trabajo de verdad lo hacen
-[yt-dlp](https://github.com/yt-dlp/yt-dlp) y [ffmpeg](https://ffmpeg.org);
-tuna-dlp solo les pone botones encima, para que pegues un enlace, elijas qué
-quieres y le des a *descargar*.
+tuna-dlp is **not** a new downloader. All the real work is done by
+[yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org);
+tuna-dlp just puts buttons on top of them, so you can paste a link, pick what you
+want and press *download*.
 
-Está pensado para quien no quiere abrir una terminal ni aprenderse las opciones
-de yt-dlp. Si te manejas con la línea de comandos, yt-dlp a secas te servirá mejor.
+It's made for people who don't want to open a terminal or learn yt-dlp's options.
+If you're comfortable with the command line, yt-dlp on its own will serve you better.
+
+The interface is in **English and Spanish**: it follows your Windows language, and
+you can switch it in the settings.
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="tuna-dlp: pegar un enlace, descargar y ver la cola">
+  <img src="docs/en/demo.gif" width="760" alt="tuna-dlp: paste a link, download and watch the queue">
 </p>
 
-## Capturas
+## Screenshots
 
-![Vista de descargar](docs/descargar.png)
+![Download view](docs/en/download.png)
 
-| Cola | Ajustes |
+| Queue | Settings |
 | --- | --- |
-| ![Cola](docs/cola.png) | ![Ajustes](docs/ajustes.png) |
-| **Menú de la bandeja** | **Aviso al terminar** |
-| ![Menú de la bandeja](docs/bandeja.png) | ![Aviso al terminar una descarga](docs/aviso.png) |
+| ![Queue](docs/en/queue.png) | ![Settings](docs/en/settings.png) |
+| **Tray menu** | **Notification when a download finishes** |
+| ![Tray menu](docs/en/tray.png) | ![Notification](docs/en/notification.png) |
 
-## Qué hace
+## Features
 
-Todo lo de esta lista está en la app hoy.
+Everything below is in the app today.
 
-**Descargar**
-- Pega una o varias URLs (una por línea), o arrastra un enlace desde el navegador a la ventana.
-- Si quieres, coge sola la URL del portapapeles al abrir la app.
-- Vista previa con miniatura, título y canal antes de descargar.
-- **Vídeo:** calidad (máxima, 4K, 1440p, 1080p, 720p, 480p, 360p), contenedor (mp4, mkv, webm) y códec (da igual, h264, vp9, av1).
-- **Solo audio:** mp3, m4a, opus, flac, wav o vorbis, eligiendo el bitrate.
-- **Solo subtítulos**, con un selector que enseña qué idiomas tiene de verdad el vídeo (subidos por el autor o automáticos).
-- Extras: incrustar miniatura, metadatos y capítulos, quitar los patrocinios con SponsorBlock, incrustar subtítulos.
-- Listas de reproducción: ves la lista y marcas qué vídeos bajar.
-- Atajos (música, vídeo, archivo, max) y tus propios presets guardados.
-- Al terminar enseña el formato real (por ejemplo *mp4 240p* si el vídeo no tenía más).
+**Downloading**
+- Paste one or more URLs (one per line), or drag a link from your browser onto the window.
+- Optionally picks up a URL from the clipboard when you open the app.
+- Preview with thumbnail, title and channel before downloading.
+- **Video:** quality (best, 4K, 1440p, 1080p, 720p, 480p, 360p), container (mp4, mkv, webm) and codec (any, h264, vp9, av1).
+- **Audio only:** mp3, m4a, opus, flac, wav or vorbis, with a bitrate choice.
+- **Subtitles only**, with a language picker that shows which languages the video actually has (uploaded by the author or automatic).
+- Extras: embed thumbnail, metadata and chapters, skip sponsor segments with SponsorBlock, embed subtitles.
+- Playlists: preview the list and tick which videos to download.
+- Built-in presets (music, video, archive, max) and your own saved presets.
+- The real format is shown when a download finishes (e.g. *mp4 240p* if that's all the video had).
 
-**La cola**
-- De 1 a 5 descargas a la vez, con progreso, velocidad y tiempo restante.
-- Cancelar, reintentar, pausar todo y reanudar (sigue desde el archivo a medias).
-- Progreso en el icono de la barra de tareas: verde, amarillo en pausa, rojo si falla.
+**Queue**
+- 1–5 downloads in parallel, with progress, speed and time left.
+- Cancel, retry, pause all / resume all (resumes from the partial file).
+- Progress on the taskbar icon: green, yellow when paused, red on error.
 
-**Funciones opcionales** (apagadas por defecto; se encienden en ajustes)
-- Ver el comando de yt-dlp que se ejecuta.
-- Recortar vídeos (de tal minuto a tal otro).
-- Plantilla para el nombre de los archivos, con vista previa.
-- Historial de descargas con buscador.
-- Suscripciones a canales: sigues un canal y baja solo lo nuevo, también al abrir la app.
+**Optional features** (off by default, turn them on in the settings)
+- Show the yt-dlp command being run.
+- Trim videos (from minute X to minute Y).
+- File name template with a live preview.
+- Download history with search.
+- Channel subscriptions: follow a channel and download only new videos, also when the app opens.
 
-**Integración con Windows**
-- Cerrar la ventana la deja en la bandeja del sistema y las descargas siguen.
-- Menú de la bandeja: estado, pegar y descargar, pausar o reanudar, abrir la carpeta de descargas, salir.
-- Puede arrancar con Windows, escondida en la bandeja.
-- Avisos propios cuando algo termina.
-- Tema claro, oscuro o el del sistema.
+**Windows integration**
+- Closing the window keeps it in the system tray; downloads carry on.
+- Tray menu: status, paste and download, pause/resume, open the downloads folder, quit.
+- Optional start with Windows, hidden in the tray.
+- Its own notifications when something finishes.
+- Light, dark or system theme. English or Spanish.
 
-**Ajustes**
-- Carpeta de descargas, límite de velocidad y cookies del navegador (Firefox, Brave, Chrome) para vídeos con límite de edad o solo para miembros.
-- Registro para no bajar dos veces lo mismo.
-- Comprobar e instalar actualizaciones de yt-dlp desde la app (canal estable o nightly).
+**Settings**
+- Download folder, speed limit, and cookies from your browser (Firefox, Brave, Chrome) for age-restricted or members-only videos.
+- "Don't download twice" archive.
+- Check for and install yt-dlp updates from inside the app (stable or nightly channel).
 
-yt-dlp y ffmpeg **van dentro del .exe**, así que no hay que instalar nada más.
+yt-dlp and ffmpeg are **bundled inside the .exe**, so there's nothing else to install.
 
-## Instalación
+## Installation
 
-1. Entra en [Releases](https://github.com/atunfrito/tuna-dlp/releases/latest).
-2. Descarga `tuna-dlp_x.y.z_x64-setup.exe` y ábrelo. Se instala solo para tu usuario, sin pedir permisos de administrador.
+1. Go to [Releases](https://github.com/atunfrito/tuna-dlp/releases/latest).
+2. Download `tuna-dlp_x.y.z_x64-setup.exe` and run it. It installs for your user only, no admin rights needed.
 
-También hay una versión portable, `tuna-dlp_x.y.z_x64-portable.zip`: descomprímela
-y abre `tuna-dlp.exe`, sin instalar nada (los ajustes se guardan igualmente en tu
-perfil de usuario).
+There's also a portable version, `tuna-dlp_x.y.z_x64-portable.zip`: unzip it and run
+`tuna-dlp.exe`, no install needed (settings are still stored in your user profile).
 
-> **Windows SmartScreen:** la app no está firmada (los certificados cuestan dinero),
-> así que la primera vez Windows puede decir *"Windows protegió su PC"*. Pulsa
-> **Más información → Ejecutar de todas formas**. Si prefieres no fiarte de un .exe
-> cualquiera, puedes [compilarlo tú](#compilarlo-desde-el-código).
+> **Windows SmartScreen:** the app isn't code-signed (certificates cost money), so
+> Windows may show *"Windows protected your PC"* the first time. Click
+> **More info → Run anyway**. If you'd rather not trust a random .exe, you can
+> [build it yourself](#building-from-source).
 
-Hace falta Windows 10 u 11 de 64 bits con WebView2, que viene de serie en Windows 11
-y en los Windows 10 actualizados. Si falta, el instalador lo descarga.
+Requirements: Windows 10 or 11 (64-bit) with WebView2, which comes with Windows 11
+and up-to-date Windows 10. The installer downloads it if it's missing.
 
-## Compilarlo desde el código
+## Building from source
 
-Necesitas:
-- [Node.js](https://nodejs.org) 20 o más nuevo
-- [Rust](https://rustup.rs) (estable, con el toolchain MSVC) y los
-  [requisitos de Tauri para Windows](https://tauri.app/start/prerequisites/)
+You need:
+- [Node.js](https://nodejs.org) 20 or newer
+- [Rust](https://rustup.rs) (stable, MSVC toolchain) and the
+  [Tauri prerequisites for Windows](https://tauri.app/start/prerequisites/)
 
 ```powershell
 git clone https://github.com/atunfrito/tuna-dlp.git
 cd tuna-dlp
 npm install
 
-# Descarga yt-dlp.exe, ffmpeg.exe y ffprobe.exe en src-tauri/bin
-# y comprueba su SHA-256. No están en el repo.
+# Downloads yt-dlp.exe, ffmpeg.exe and ffprobe.exe into src-tauri/bin
+# and checks their SHA-256. They're not in the repo.
 powershell -ExecutionPolicy Bypass -File scripts/binarios.ps1
 
-npm run dev          # en modo desarrollo
-npm run build        # .exe portable en src-tauri/target/release
-npm run instalador   # instalador en src-tauri/target/release/bundle/nsis
+npm run dev          # run in development
+npm run build        # portable .exe in src-tauri/target/release
+npm run instalador   # installer in src-tauri/target/release/bundle/nsis
 ```
 
-La primera compilación es lenta: `build.rs` comprime con zstd los ~230 MB de
-yt-dlp y ffmpeg para meterlos en el .exe. La primera vez que se abre, la app los
-extrae en `%LOCALAPPDATA%\es.atunfrito.tunadlp\bin`.
+The first build is slow: `build.rs` compresses the ~230 MB of yt-dlp and ffmpeg
+with zstd so they fit inside the .exe. On first run the app extracts them to
+`%LOCALAPPDATA%\es.atunfrito.tunadlp\bin`.
 
-Hecho con [Tauri 2](https://tauri.app), [Svelte 5](https://svelte.dev) y Rust.
+Made with [Tauri 2](https://tauri.app), [Svelte 5](https://svelte.dev) and Rust. The
+code and its comments are in Spanish; all the interface text lives in
+[`src/lib/textos.js`](src/lib/textos.js).
 
-## Problemas que me encontré (y cómo están resueltos)
+## Problems I ran into (and how they're solved)
 
-- **Los títulos con "…" o comillas curvas rompían la descarga (`Errno 22`).** El
-  yt-dlp.exe escribe en la página de códigos de la consola (cp1252) cuando no tiene
-  una de verdad. tuna-dlp siempre lo lanza con `--encoding utf-8`, `PYTHONUTF8=1`,
-  `PYTHONIOENCODING=utf-8`, la entrada estándar a null, `--windows-filenames` y la
-  carpeta en `-P` en vez de dentro de `-o`. Los argumentos van como lista, nunca
-  a través de una shell.
-- **Recortar con `--download-sections` daba archivos rotos.** tuna-dlp baja el vídeo
-  entero y luego lo corta con ffmpeg. Si el inicio cae en un fotograma clave, solo
-  copia; si no, recodifica para que el corte sea exacto.
-- **Ventanas de consola que aparecían y desaparecían.** Todos los procesos (yt-dlp,
-  ffmpeg, ffprobe) se lanzan con `CREATE_NO_WINDOW`.
-- **Arrastrar enlaces desde el navegador no funcionaba** (y el aviso de "suéltalo
-  aquí" se quedaba pegado): el manejador de arrastrar y soltar de Tauri solo entiende
-  archivos. Está apagado, y así WebView2 le pasa el enlace a la página.
-- **La barra de progreso de la barra de tareas salía gris** en Windows 11, porque
-  usa el color de énfasis del sistema. tuna-dlp pinta su propia barra sobre el icono.
-- **El menú de la bandeja.** El menú nativo de Windows no se puede personalizar,
-  así que es una ventanita que no roba el foco (si lo hiciera, se cerraría el
-  desplegable de iconos ocultos) y se cierra con un clic fuera, con Esc o cuando
-  se cierra ese desplegable.
-- **Si la app se cerraba sola no quedaba rastro**, así que todo queda apuntado en
-  `%LOCALAPPDATA%\es.atunfrito.tunadlp\logs\tuna-dlp.log`.
+- **Titles with "…" or curly quotes broke downloads (`Errno 22`).** The yt-dlp.exe
+  build writes in the console's code page (cp1252) when it has no real console.
+  tuna-dlp always runs it with `--encoding utf-8`, `PYTHONUTF8=1`,
+  `PYTHONIOENCODING=utf-8`, stdin set to null, `--windows-filenames`, and the
+  folder passed with `-P` instead of inside `-o`. Arguments are passed as an array,
+  never through a shell.
+- **Trimming with `--download-sections` produced broken files.** tuna-dlp
+  downloads the whole video and cuts it with ffmpeg afterwards. If the start lands
+  on a keyframe it just copies the streams; if not, it re-encodes so the cut is exact.
+- **Console windows popping up.** Every process (yt-dlp, ffmpeg, ffprobe) is
+  started with `CREATE_NO_WINDOW`.
+- **Dragging links from the browser didn't work** (and the "drop it here" overlay
+  got stuck): Tauri's drag and drop handler only understands files. It's turned off,
+  so WebView2 hands the link to the page.
+- **The taskbar progress bar was grey** on Windows 11, because it uses the system
+  accent colour. tuna-dlp draws its own bar on the taskbar icon.
+- **The tray menu.** The native Windows menu can't be styled, so it's a small
+  window that doesn't steal focus (otherwise the hidden-icons flyout closes) and
+  closes on a click outside, on Esc, or when the flyout goes away.
+- **If the app closed unexpectedly** there was no trace, so everything is logged
+  to `%LOCALAPPDATA%\es.atunfrito.tunadlp\logs\tuna-dlp.log`.
 
-## Créditos y licencias
+## Credits and licenses
 
-tuna-dlp se publica con [licencia MIT](LICENSE). La lista completa de software de
-terceros, con versiones, licencias y dónde está su código fuente, está en
-[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), y los textos de las licencias en
+tuna-dlp itself is released under the [MIT License](LICENSE). The full list of
+third-party software, with versions, licenses and where to get the source code, is
+in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md); the license texts are in
 [`licenses/`](licenses).
 
-Incluye y ejecuta estos programas, que mantienen sus propias licencias:
+It bundles and runs these programs, which keep their own licenses:
 
 - **[yt-dlp](https://github.com/yt-dlp/yt-dlp)**: [Unlicense](https://github.com/yt-dlp/yt-dlp/blob/master/LICENSE).
-  Es el `yt-dlp.exe` oficial de la última versión publicada al compilar, y se puede
-  actualizar desde la propia app.
-- **[FFmpeg](https://ffmpeg.org)** (`ffmpeg.exe` y `ffprobe.exe`): el build
-  *release essentials* de [gyan.dev](https://www.gyan.dev/ffmpeg/builds/)
-  (FFmpeg 9.0.2 en la v1.0.0). Está compilado con `--enable-gpl --enable-version3`,
-  así que su licencia es **GPL v3**. El código fuente de FFmpeg está en
-  [ffmpeg.org/download.html](https://ffmpeg.org/download.html), y gyan.dev publica
-  la configuración y las librerías exactas de cada build. tuna-dlp no modifica
-  FFmpeg: solo lo ejecuta como un programa aparte.
+  The official `yt-dlp.exe` from the latest yt-dlp release at build time. It can be
+  updated from inside the app.
+- **[FFmpeg](https://ffmpeg.org)** (`ffmpeg.exe` and `ffprobe.exe`): the
+  *release essentials* build by [gyan.dev](https://www.gyan.dev/ffmpeg/builds/)
+  (FFmpeg 9.0.2). It's built with `--enable-gpl --enable-version3`, so it's licensed
+  under the **GPL v3**. FFmpeg's source code is at
+  [ffmpeg.org/download.html](https://ffmpeg.org/download.html), and gyan.dev lists the
+  exact configuration and libraries of each build. tuna-dlp doesn't modify FFmpeg;
+  it only runs it as a separate program.
 
-También usa [Tauri](https://tauri.app) (MIT/Apache-2.0), [Svelte](https://svelte.dev)
-(MIT), los iconos de [Lucide](https://lucide.dev) (ISC) y las fuentes Instrument
-Serif, Archivo, JetBrains Mono y Caveat (SIL Open Font License).
+Also used: [Tauri](https://tauri.app) (MIT/Apache-2.0), [Svelte](https://svelte.dev)
+(MIT), [Lucide](https://lucide.dev) icons (ISC), and the fonts Instrument Serif,
+Archivo, JetBrains Mono and Caveat (SIL Open Font License).
 
-tuna-dlp no tiene relación con yt-dlp, FFmpeg, YouTube ni ninguna otra web. Descarga
-solo lo que tengas derecho a descargar.
+tuna-dlp is not affiliated with yt-dlp, FFmpeg, YouTube or any other site. Download
+only what you have the right to download.
 
-Hecho por [atunfrito](https://atunfrito.es).
-
----
-
-## In English
-
-**tuna-dlp** is a simple Windows GUI for **yt-dlp** and **ffmpeg**, for people who
-don't want to use the terminal. It's not a new downloader: yt-dlp and ffmpeg do all
-the work, and both are bundled inside the .exe. **The interface is in Spanish only.**
-
-- **Install:** get the `-setup.exe` from [Releases](https://github.com/atunfrito/tuna-dlp/releases/latest).
-  It isn't code-signed, so Windows SmartScreen may warn you: *More info → Run anyway*.
-- **Build:** see [Compilarlo desde el código](#compilarlo-desde-el-código) (the commands are the same).
-- **License:** MIT. yt-dlp is Unlicense; the bundled ffmpeg (gyan.dev build) is GPL v3.
+Made by [atunfrito](https://atunfrito.es).

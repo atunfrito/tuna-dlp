@@ -10,6 +10,7 @@
   import "./lib/bandeja.svelte.js";
   import { ajustes, app, form, enTauri } from "./lib/estado.svelte.js";
   import { activas } from "./lib/cola.svelte.js";
+  import { t } from "./lib/i18n.svelte.js";
 
   let main;
   // Cada vista empieza arriba del todo.
@@ -59,12 +60,12 @@
       <div class="brillo"></div>
       {#if arrastrando}
         <div class="soltar">
-          <span class="grande">suéltalo aquí</span>
-          <span class="pequeno">SE AÑADE A LA LISTA DE URLS</span>
+          <span class="grande">{t("soltar.titulo")}</span>
+          <span class="pequeno">{t("soltar.pista")}</span>
         </div>
       {/if}
       {#if !enTauri}
-        <p class="fuera">esto es solo la interfaz. para usarla, arranca la app con <code>npm run dev</code>.</p>
+        <p class="fuera">{t("fuera")} <code>npm run dev</code>.</p>
       {/if}
       {#if app.vista === "dl"}
         <Descargar />

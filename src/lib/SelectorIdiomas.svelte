@@ -3,6 +3,7 @@
   // que reconoce lo que escribes ("ingl", "japo", "fr"…). valor es la lista de
   // códigos para yt-dlp ("es,en"). del vídeo: lo que tiene de verdad, si hay.
   import { COMUNES, TODOS, nombre, normal } from "./idiomas.js";
+  import { t } from "./i18n.svelte.js";
 
   let { valor = $bindable(), manuales = null, automaticos = null, alCambiar = () => {} } = $props();
 
@@ -73,7 +74,7 @@
       {#each elegidos as c (c)}
         <span class="elegido">
           {nombre(c)}
-          <button type="button" aria-label="quitar {nombre(c)}" onclick={() => quitar(c)}>×</button>
+          <button type="button" aria-label={t("idiomas.quitar", { nombre: nombre(c) })} onclick={() => quitar(c)}>×</button>
         </span>
       {/each}
     </div>
@@ -84,7 +85,7 @@
       bind:this={campo}
       bind:value={texto}
       class="campo"
-      placeholder="añade un idioma: inglés, japonés, fr…"
+      placeholder={t("idiomas.buscar")}
       spellcheck="false"
       role="combobox"
       aria-expanded={abierto}
@@ -105,8 +106,8 @@
           >
             <span class="nombre">{n}</span>
             <span class="codigo">{c}</span>
-            {#if tipo === "autor"}<span class="marca autor">en el vídeo</span>
-            {:else if tipo === "auto"}<span class="marca">automático</span>{/if}
+            {#if tipo === "autor"}<span class="marca autor">{t("idiomas.en_video")}</span>
+            {:else if tipo === "auto"}<span class="marca">{t("idiomas.auto")}</span>{/if}
           </button>
         {:else}
           {#if codigoSuelto}
@@ -115,14 +116,14 @@
               <span class="nombre">{nombre(texto.trim())}</span><span class="codigo">{texto.trim()}</span>
             </button>
           {:else}
-            <span class="nada">ese idioma no me suena. prueba con su código.</span>
+            <span class="nada">{t("idiomas.nada")}</span>
           {/if}
         {/each}
       </div>
     {/if}
   </div>
   {#if hayVideo && !manuales.length && !automaticos?.length}
-    <span class="nota">este vídeo no trae subtítulos.</span>
+    <span class="nota">{t("idiomas.sin_subs")}</span>
   {/if}
 </div>
 
