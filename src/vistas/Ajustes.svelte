@@ -5,13 +5,14 @@
   import { version } from "../../package.json";
   import { ajustes, app, comprobar, actualizar } from "../lib/estado.svelte.js";
   import { t, tError } from "../lib/i18n.svelte.js";
+  import { activas } from "../lib/cola.svelte.js";
 
   // [título, pista, botón, fondo] por estado, tal cual el prototipo.
   const U = $derived({
     idle: [t("upd.idle"), t("upd.idle_pista"), t("upd.comprobar"), "rgba(37, 31, 25, 0.04)"],
     checking: [t("upd.checking"), t("upd.checking_pista"), "", "rgba(37, 31, 25, 0.04)"],
     available: [t("upd.available", { version: app.ultima }), t("upd.available_pista"), t("upd.actualizar"), "#fbe3e6"],
-    updating: [t("upd.updating"), t("upd.updating_pista"), "", "#fbe3e6"],
+    updating: [t("upd.updating"), app.ytTotal ? t("act.bajando", { pct: Math.round((app.ytBajado / app.ytTotal) * 100) + " %" }) : t("upd.updating_pista"), "", "#fbe3e6"],
     ok: [t("upd.ok", { version: app.ytv }), t("upd.ok_pista"), t("upd.otra_vez"), "#dcefe2"],
     error: ["", "", t("upd.comprobar"), "#fbe3e6"],
   }[app.upd]);
@@ -40,13 +41,14 @@
         {/if}
       </span>
       {#if U[2]}
-        <button type="button" class="boton" class:primario={app.upd === "available"} onclick={accion}>{U[2]}</button>
+        <button type="button" class="boton" class:primario={app.upd === "available"} disabled={app.upd === "available" && activas() > 0} title={app.upd === "available" && activas() > 0 ? t("act.esperar") : ""} onclick={accion}>{U[2]}</button>
       {/if}
     </div>
     <div class="grupo">
       <span class="sub">{t("aj.canal")}</span>
       <Chips bind:valor={ajustes.canal} alCambiar={comprobar} opciones={[["stable", t("aj.estable")], ["nightly", "nightly"]]} />
     </div>
+    <Interruptor borde="arriba" bind:valor={ajustes.buscarActualizaciones} etiqueta={t("aj.buscar")} pista={t("aj.buscar_pista")} />
   </section>
 
   <section class="papel">
@@ -154,6 +156,7 @@
   .boton:hover { transform: translateY(-1px); }
   .boton.primario { border: none; background: var(--accent); color: var(--accent-fg); }
   .boton.primario:hover { background: var(--accent-hot); }
+  .boton:disabled { opacity: 0.45; cursor: default; transform: none; }
 
   .opcion { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
   .titulo-op { font-size: 14px; font-weight: 600; }

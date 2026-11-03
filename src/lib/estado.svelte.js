@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { PLANTILLA } from "./comando.js";
 
 // Lo que Rust inyecta antes de cargar la página (ver src-tauri/src/lib.rs).
@@ -37,11 +38,13 @@ const AJUSTES = {
   abrirConWindows: false,
   // Ya se avisó una vez de que cerrar la ventana la deja en la bandeja.
   avisoBandeja: false,
+  // Al abrir, preguntar a github si hay tuna-dlp o yt-dlp nuevos.
+  buscarActualizaciones: true,
 };
 
 export const ajustes = $state({ ...AJUSTES, ...inicio.ajustes });
 // upd: idle | checking | available | updating | ok | error
-export const app = $state({ vista: "dl", ytv: "", ffmpeg: "", upd: "idle", ultima: "", updError: "" });
+export const app = $state({ vista: "dl", ytv: "", ffmpeg: "", upd: "idle", ultima: "", updError: "", ytBajado: 0, ytTotal: 0 });
 
 // Se guardan solos, agrupando cambios seguidos en una sola escritura.
 let pendiente;
@@ -99,6 +102,8 @@ export async function comprobar() {
 
 export async function actualizar() {
   app.upd = "updating";
+  app.ytBajado = 0;
+  app.ytTotal = 0;
   try {
     app.ytv = await invoke("actualizar_ytdlp", { canal: ajustes.canal });
     app.upd = "ok";
@@ -108,8 +113,11 @@ export async function actualizar() {
   }
 }
 
-// Al arrancar se mira si hay yt-dlp nuevo, para el punto rojo de "ajustes".
-if (enTauri) leerVersiones().then(comprobar);
+// Lo que lleva bajado actualizar_ytdlp (src-tauri/src/actualizar.rs).
+if (enTauri) listen("ytdlp-progreso", (e) => { app.ytBajado = e.payload.bajado; app.ytTotal = e.payload.total ?? 0; });
+
+// Al arrancar se mira si hay yt-dlp nuevo, para el aviso y el punto rojo de "ajustes".
+if (enTauri) leerVersiones().then(() => ajustes.buscarActualizaciones && comprobar());
 
 // Opciones de la vista descargar. Viven aquí para no perderse al cambiar de vista.
 export const form = $state({

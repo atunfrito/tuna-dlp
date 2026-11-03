@@ -32,6 +32,10 @@
     "allow-lista",
     "allow-elegir-carpeta",
     "allow-leer-portapapeles",
-    "allow-guardar-ajustes"
+    "allow-guardar-ajustes",
+    "allow-es-portable",
+    "allow-abrir-release",
+    "updater:default",
+    "process:allow-restart"
   ]
 }

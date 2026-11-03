@@ -1,5 +1,6 @@
 <script>
   import Barra from "./lib/Barra.svelte";
+  import Actualizaciones from "./lib/Actualizaciones.svelte";
   import Lateral from "./lib/Lateral.svelte";
   import Descargar from "./vistas/Descargar.svelte";
   import Cola from "./vistas/Cola.svelte";
@@ -67,6 +68,7 @@
       {#if !enTauri}
         <p class="fuera">{t("fuera")} <code>npm run dev</code>.</p>
       {/if}
+      {#if enTauri}<Actualizaciones />{/if}
       {#if app.vista === "dl"}
         <Descargar />
       {:else if app.vista === "queue"}

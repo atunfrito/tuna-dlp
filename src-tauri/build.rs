@@ -43,6 +43,7 @@ fn main() {
         "mostrar_ventana", "abrir_con_windows", "estado_bandeja", "accion_bandeja", "historial",
         "seguir_canal", "novedades", "dejar_canal", "versiones", "ultima_version", "actualizar_ytdlp",
         "abrir_registros", "abrir_web", "info", "lista", "elegir_carpeta", "leer_portapapeles", "guardar_ajustes",
+        "es_portable", "abrir_release",
     ])))
     .expect("error en tauri-build")
 }

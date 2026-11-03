@@ -1,3 +1,4 @@
+mod actualizar;
 mod argumentos;
 mod aviso;
 mod bandeja;
@@ -241,6 +242,9 @@ pub fn run() {
         // bandeja), se enseña ese en vez de abrir otro con un segundo icono.
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| bandeja::mostrar(app)))
         .plugin(tauri_plugin_dialog::init())
+        // Actualizaciones de la app: solo paquetes firmados con la clave de tauri.conf.json.
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .manage(cola::Procesos::default())
         .manage(historial::Cerrojo::default())
         .manage(barra::Ultimo::default())
@@ -316,8 +320,10 @@ pub fn run() {
             canales::novedades,
             canales::dejar_canal,
             motor::versiones,
-            motor::ultima_version,
-            motor::actualizar_ytdlp,
+            actualizar::ultima_version,
+            actualizar::actualizar_ytdlp,
+            actualizar::es_portable,
+            actualizar::abrir_release,
             motor::abrir_registros,
             motor::abrir_web,
             info,
