@@ -78,9 +78,15 @@ Everything below is in the app today.
 **Settings**
 - Download folder, speed limit, and cookies from your browser (Firefox, Brave, Chrome) for age-restricted or members-only videos.
 - "Don't download twice" archive.
-- Check for and install yt-dlp updates from inside the app (stable or nightly channel).
+- Updates for tuna-dlp and yt-dlp from inside the app (see [Updates](#updates)).
 
 yt-dlp and ffmpeg are **bundled inside the .exe**, so there's nothing else to install.
+
+<!-- Subscriptions GIF: save it as docs/en/subscriptions.gif and uncomment.
+<p align="center">
+  <img src="docs/en/subscriptions.gif" width="760" alt="tuna-dlp: follow a channel and download only the new videos">
+</p>
+-->
 
 ## Installation
 
@@ -94,6 +100,32 @@ There's also a portable version, `tuna-dlp_x.y.z_x64-portable.zip`: unzip it and
 > Windows may show *"Windows protected your PC"* the first time. Click
 > **More info → Run anyway**. If you'd rather not trust a random .exe, you can
 > [build it yourself](#building-from-source).
+
+<!-- SmartScreen screenshot: save it as docs/en/smartscreen.png and uncomment.
+<p align="center"><img src="docs/en/smartscreen.png" width="520" alt="Windows SmartScreen: More info, then Run anyway"></p>
+-->
+
+Every release lists the **SHA-256** of its files, so you can check your download:
+
+```powershell
+Get-FileHash .\tuna-dlp_x.y.z_x64-setup.exe
+```
+
+## Updates
+
+When it opens, tuna-dlp asks GitHub whether there's a new version of itself or of
+yt-dlp, and shows a notice at the top. Nothing is installed without you clicking it.
+
+- **tuna-dlp** (installed version): *update* downloads the new installer, installs it
+  and reopens the app. It only accepts packages signed with the project's key; if the
+  signature doesn't match, nothing is installed. The portable version just tells you
+  and opens the release page.
+- **yt-dlp**: the new `yt-dlp.exe` comes only from its
+  [official release](https://github.com/yt-dlp/yt-dlp/releases) over HTTPS, and only
+  replaces the old one if its SHA-256 matches the release's `SHA2-256SUMS`. If the new
+  one doesn't start, the old one is put back.
+
+You can turn the startup check off in *settings → the engine*.
 
 Requirements: Windows 10 or 11 (64-bit) with WebView2, which comes with Windows 11
 and up-to-date Windows 10. The installer downloads it if it's missing.
@@ -118,6 +150,9 @@ npm run dev          # run in development
 npm run build        # portable .exe in src-tauri/target/release
 npm run instalador   # installer in src-tauri/target/release/bundle/nsis
 ```
+
+Your own builds don't need any key. Only official releases are signed for the updater:
+GitHub Actions builds them from a `vX.Y.Z` tag ([`release.yml`](.github/workflows/release.yml)).
 
 The first build is slow: `build.rs` compresses the ~230 MB of yt-dlp and ffmpeg
 with zstd so they fit inside the .exe. On first run the app extracts them to
