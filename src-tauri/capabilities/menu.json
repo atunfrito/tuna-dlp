@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "menu",
+  "description": "Menú de la bandeja: leer el estado y mandar la opción pulsada.",
+  "windows": [
+    "menu"
+  ],
+  "permissions": [
+    "core:event:default",
+    "allow-estado-bandeja",
+    "allow-accion-bandeja"
+  ]
+}

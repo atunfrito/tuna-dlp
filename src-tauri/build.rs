@@ -36,5 +36,13 @@ fn main() {
 
     fs::write(Path::new(&out).join("binarios.zst"), enc.finish().unwrap()).unwrap();
     fs::write(Path::new(&out).join("indice.rs"), indice).unwrap();
-    tauri_build::build()
+    // Los comandos de la app se declaran aquí para poder dar a cada ventana
+    // (principal, aviso, menú de la bandeja) solo los que necesita; ver capabilities/.
+    tauri_build::try_build(tauri_build::Attributes::new().app_manifest(tauri_build::AppManifest::new().commands(&[
+        "iniciar", "cancelar", "mostrar_en_carpeta", "aviso", "cerrar_aviso", "bandeja", "progreso_icono",
+        "mostrar_ventana", "abrir_con_windows", "estado_bandeja", "accion_bandeja", "historial",
+        "seguir_canal", "novedades", "dejar_canal", "versiones", "ultima_version", "actualizar_ytdlp",
+        "abrir_registros", "abrir_web", "info", "lista", "elegir_carpeta", "leer_portapapeles", "guardar_ajustes",
+    ])))
+    .expect("error en tauri-build")
 }

@@ -1,12 +1,37 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "windows": ["main", "aviso", "menu"],
+  "description": "Ventana principal: todo lo que usa la interfaz.",
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "core:window:allow-start-dragging",
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
-    "core:window:allow-close"
+    "core:window:allow-close",
+    "allow-iniciar",
+    "allow-cancelar",
+    "allow-mostrar-en-carpeta",
+    "allow-aviso",
+    "allow-bandeja",
+    "allow-progreso-icono",
+    "allow-mostrar-ventana",
+    "allow-abrir-con-windows",
+    "allow-historial",
+    "allow-seguir-canal",
+    "allow-novedades",
+    "allow-dejar-canal",
+    "allow-versiones",
+    "allow-ultima-version",
+    "allow-actualizar-ytdlp",
+    "allow-abrir-registros",
+    "allow-abrir-web",
+    "allow-info",
+    "allow-lista",
+    "allow-elegir-carpeta",
+    "allow-leer-portapapeles",
+    "allow-guardar-ajustes"
   ]
 }

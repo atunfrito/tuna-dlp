@@ -132,6 +132,7 @@ pub async fn iniciar(
     formato: String,
 ) -> Result<(), String> {
     let tramo = recorte.as_ref().map(recorte::tramo).transpose()?;
+    crate::argumentos::validar(&args, &datos_app(&app)?)?;
     // async: la primera vez puede tocar esperar a que se extraigan los binarios.
     let mut hijo = yt_dlp(&app)?
         .args(&args)
@@ -230,6 +231,11 @@ fn recortar(app: &AppHandle, id: u32, rutas: &[&str], tramo: (f64, Option<f64>))
     Ok(())
 }
 
+/// ¿Hay alguna descarga con yt-dlp en marcha?
+pub fn hay_descargas(app: &AppHandle) -> bool {
+    !app.state::<Procesos>().0.lock().unwrap().is_empty()
+}
+
 /// Mata yt-dlp y todo lo que haya lanzado (su propio intérprete y ffmpeg).
 fn matar_arbol(pid: u32) {
     let _ = Command::new("taskkill")
@@ -261,12 +267,20 @@ pub fn cancelar_todas(app: &AppHandle) {
 #[tauri::command]
 pub fn mostrar_en_carpeta(ruta: Option<String>, carpeta: String) {
     let mut cmd = Command::new("explorer");
-    // Si aún no se ha bajado nada, la carpeta puede no existir.
-    let _ = std::fs::create_dir_all(&carpeta);
-    match ruta.filter(|r| std::path::Path::new(r).exists()) {
+    // explorer abre (o ejecuta) lo que le pasen: solo se le da un archivo que
+    // exista, para seleccionarlo, o una carpeta.
+    match ruta.filter(|r| std::path::Path::new(r).is_file()) {
         // explorer no sigue las reglas normales de comillas: hay que montarlas a mano.
+        // Una ruta que existe no puede llevar comillas (Windows no las permite).
         Some(r) => cmd.raw_arg(format!("/select,\"{r}\"")),
-        None => cmd.arg(carpeta),
+        None => {
+            // Si aún no se ha bajado nada, la carpeta puede no existir.
+            let _ = std::fs::create_dir_all(&carpeta);
+            if !std::path::Path::new(&carpeta).is_dir() {
+                return;
+            }
+            cmd.arg(carpeta)
+        }
     };
     let _ = cmd.spawn();
 }

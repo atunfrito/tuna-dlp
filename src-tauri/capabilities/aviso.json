@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "aviso",
+  "description": "Ventanita de avisos: cerrarse, abrir la app y la carpeta.",
+  "windows": [
+    "aviso"
+  ],
+  "permissions": [
+    "allow-cerrar-aviso",
+    "allow-mostrar-ventana",
+    "allow-mostrar-en-carpeta"
+  ]
+}
