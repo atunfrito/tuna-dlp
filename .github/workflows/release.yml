@@ -99,8 +99,17 @@ jobs:
           $sumas | Set-Content SHA256SUMS.txt -Encoding ascii
           gh release upload $env:TAG $zip SHA256SUMS.txt --clobber
 
+          # tauri-action pone en latest.json la dirección de la API (la del borrador);
+          # el actualizador usa la pública de la release. La firma no cambia.
+          gh release download $env:TAG -p latest.json -D actualizador --clobber
+          $publica = "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:TAG/$($setup.Name)"
+          $json = (Get-Content actualizador/latest.json -Raw) -replace 'https://api\.github\.com/repos/[^"]+/releases/assets/\d+', $publica
+          [IO.File]::WriteAllText("$PWD/actualizador/latest.json", $json)
+          gh release upload $env:TAG actualizador/latest.json --clobber
+
           $cuerpo = (Get-Content ".github/notas/$env:TAG.md" -Raw).TrimEnd()
-          $cuerpo += "`n`n### SHA-256`n``````n" + ($sumas -join "`n") + "`n``````n"
+          $tres = [string][char]96 * 3
+          $cuerpo += "`n`n### SHA-256`n$tres`n" + ($sumas -join "`n") + "`n$tres`n"
           $cuerpo | Set-Content notas.md -Encoding utf8
           gh release edit $env:TAG --notes-file notas.md
           Get-Content SHA256SUMS.txt
