@@ -82,11 +82,9 @@ Todo lo de esta lista está en la app hoy.
 
 yt-dlp y ffmpeg **van dentro del .exe**, así que no hay que instalar nada más.
 
-<!-- GIF de suscripciones: guárdalo como docs/es/suscripciones.gif y descomenta.
 <p align="center">
   <img src="docs/es/suscripciones.gif" width="760" alt="tuna-dlp: seguir un canal y bajar solo los vídeos nuevos">
 </p>
--->
 
 ## Instalación
 
@@ -102,9 +100,7 @@ perfil de usuario).
 > **Más información → Ejecutar de todas formas**. Si prefieres no fiarte de un .exe
 > cualquiera, puedes [compilarlo tú](#compilarlo-desde-el-código).
 
-<!-- Captura de SmartScreen: guárdala como docs/es/smartscreen.png y descomenta.
-<p align="center"><img src="docs/es/smartscreen.png" width="520" alt="Windows SmartScreen: Más información y Ejecutar de todas formas"></p>
--->
+<p align="center"><img src="docs/es/smartscreen.png" width="760" alt="Windows SmartScreen: Más información y Ejecutar de todas formas"></p>
 
 Cada release trae el **SHA-256** de sus archivos, para que puedas comprobar la descarga:
 

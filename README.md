@@ -82,11 +82,9 @@ Everything below is in the app today.
 
 yt-dlp and ffmpeg are **bundled inside the .exe**, so there's nothing else to install.
 
-<!-- Subscriptions GIF: save it as docs/en/subscriptions.gif and uncomment.
 <p align="center">
   <img src="docs/en/subscriptions.gif" width="760" alt="tuna-dlp: follow a channel and download only the new videos">
 </p>
--->
 
 ## Installation
 
@@ -101,9 +99,8 @@ There's also a portable version, `tuna-dlp_x.y.z_x64-portable.zip`: unzip it and
 > **More info → Run anyway**. If you'd rather not trust a random .exe, you can
 > [build it yourself](#building-from-source).
 
-<!-- SmartScreen screenshot: save it as docs/en/smartscreen.png and uncomment.
-<p align="center"><img src="docs/en/smartscreen.png" width="520" alt="Windows SmartScreen: More info, then Run anyway"></p>
--->
+<p align="center"><img src="docs/en/smartscreen.png" width="760" alt="Windows SmartScreen: More info, then Run anyway"></p>
+<p align="center"><sub>Screenshot from Spanish Windows: <i>Más información</i> = More info, <i>Ejecutar de todas formas</i> = Run anyway.</sub></p>
 
 Every release lists the **SHA-256** of its files, so you can check your download:
 
