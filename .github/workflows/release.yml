@@ -1,0 +1,106 @@
+# Al subir un tag vX.Y.Z: compila el instalador firmado para el actualizador,
+# genera latest.json, el zip portable y las sumas SHA-256, y lo deja todo en
+# una release BORRADOR. Se publica a mano después de revisarla.
+#
+# Secrets necesarios: TAURI_SIGNING_PRIVATE_KEY y TAURI_SIGNING_PRIVATE_KEY_PASSWORD.
+name: release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      # Crear la release y subirle archivos. Nada más.
+      contents: write
+    env:
+      TAG: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      # Acciones fijadas por commit: una etiqueta se puede mover, un SHA no.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: El tag coincide con la versión
+        shell: pwsh
+        run: |
+          $paquete = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $tauri = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          if ("v$paquete" -ne $env:TAG -or "v$tauri" -ne $env:TAG) { throw "tag $env:TAG, package.json $paquete, tauri.conf.json $tauri" }
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: stable
+
+      - name: Dependencias (versiones exactas del lockfile)
+        run: npm ci
+
+      - name: yt-dlp y ffmpeg, con su SHA-256 comprobado
+        shell: pwsh
+        run: ./scripts/binarios.ps1
+
+      - name: Notas de la release
+        shell: pwsh
+        run: |
+          $notas = ".github/notas/$env:TAG.md"
+          if (-not (Test-Path $notas)) { throw "falta $notas" }
+
+      - name: Compilar, firmar y crear la release borrador
+        id: tauri
+        uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # action-v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: tuna-dlp ${{ github.ref_name }}
+          releaseBody: "(las notas se ponen en el paso siguiente)"
+          releaseDraft: true
+          prerelease: false
+          # Solo aquí se generan los paquetes firmados (.sig): compilar en local no pide la clave.
+          args: --bundles nsis --config src-tauri/tauri.release.conf.json
+          uploadUpdaterJson: true
+          updaterJsonPreferNsis: true
+
+      - name: Zip portable, SHA-256 y notas
+        shell: pwsh
+        run: |
+          $v = $env:TAG.TrimStart("v")
+          $setup = Get-Item "src-tauri/target/release/bundle/nsis/tuna-dlp_${v}_x64-setup.exe"
+
+          # Portable: el .exe con las licencias al lado, como el instalador.
+          $dir = New-Item -ItemType Directory -Force "portable/tuna-dlp"
+          Copy-Item src-tauri/target/release/tuna-dlp.exe $dir
+          Copy-Item LICENSE "$dir/LICENSE.txt"
+          Copy-Item THIRD-PARTY-NOTICES.md, THIRD-PARTY-NOTICES.es.md $dir
+          Copy-Item licenses "$dir/licenses" -Recurse
+          $zip = "tuna-dlp_${v}_x64-portable.zip"
+          Compress-Archive "$dir/*" $zip
+
+          $sumas = foreach ($f in @($setup.FullName, (Resolve-Path $zip).Path)) {
+            "{0}  {1}" -f (Get-FileHash $f -Algorithm SHA256).Hash.ToLower(), (Split-Path $f -Leaf)
+          }
+          $sumas | Set-Content SHA256SUMS.txt -Encoding ascii
+          gh release upload $env:TAG $zip SHA256SUMS.txt --clobber
+
+          $cuerpo = (Get-Content ".github/notas/$env:TAG.md" -Raw).TrimEnd()
+          $cuerpo += "`n`n### SHA-256`n``````n" + ($sumas -join "`n") + "`n``````n"
+          $cuerpo | Set-Content notas.md -Encoding utf8
+          gh release edit $env:TAG --notes-file notas.md
+          Get-Content SHA256SUMS.txt
