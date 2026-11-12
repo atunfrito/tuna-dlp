@@ -1,0 +1,71 @@
+name: Bug report
+description: Something doesn't work the way it should. / Algo no funciona como debería.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. English or Spanish, whichever you prefer.
+        Gracias por tomarte el tiempo. En inglés o en español, como prefieras.
+
+  - type: input
+    id: version
+    attributes:
+      label: tuna-dlp version
+      description: shown at the bottom of the sidebar, e.g. 1.2.0
+      placeholder: "1.2.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Installed or portable
+      options:
+        - installed
+        - portable
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      description: Win + R → winver
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+
+  - type: input
+    id: link
+    attributes:
+      label: Link you were downloading (if it's about a download)
+      description: Only if you're fine sharing it publicly.
+      placeholder: "https://..."
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you did
+      description: Step by step, so I can do the same.
+      placeholder: |
+        1. pasted a link
+        2. picked audio only
+        3. pressed download
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: Error messages, screenshots and the log from the queue help a lot.
+    validations:
+      required: true

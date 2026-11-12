@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: yt-dlp itself (a site stopped working, formats, extractors)
+    url: https://github.com/yt-dlp/yt-dlp/issues
+    about: If a site fails in yt-dlp too, it's a yt-dlp issue, not a tuna-dlp one.

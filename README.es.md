@@ -124,6 +124,10 @@ y lo avisa arriba. No se instala nada sin que lo pulses.
 
 Se puede apagar en *ajustes → el motor*.
 
+Para enterarte también por GitHub de las versiones nuevas, usa *Watch → Custom →
+Releases* arriba en esta página. ¿Has encontrado un fallo?
+[Abre un issue](https://github.com/atunfrito/tuna-dlp/issues/new/choose).
+
 Hace falta Windows 10 u 11 de 64 bits con WebView2, que viene de serie en Windows 11
 y en los Windows 10 actualizados. Si falta, el instalador lo descarga.
 

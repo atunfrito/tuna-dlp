@@ -124,6 +124,9 @@ yt-dlp, and shows a notice at the top. Nothing is installed without you clicking
 
 You can turn the startup check off in *settings → the engine*.
 
+To hear about new versions on GitHub too, use *Watch → Custom → Releases* at the top
+of this page. Found a bug? [Open an issue](https://github.com/atunfrito/tuna-dlp/issues/new/choose).
+
 Requirements: Windows 10 or 11 (64-bit) with WebView2, which comes with Windows 11
 and up-to-date Windows 10. The installer downloads it if it's missing.
 
